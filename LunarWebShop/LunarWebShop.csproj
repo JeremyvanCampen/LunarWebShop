@@ -146,9 +146,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Administrator.cs" />
+    <Compile Include="Models\Enums\BetaalMethode.cs" />
+    <Compile Include="Models\Enums\Genre.cs" />
+    <Compile Include="Models\Enums\Uitgever.cs" />
+    <Compile Include="Models\Gebruiker.cs" />
+    <Compile Include="Models\ILibraryManagement.cs" />
+    <Compile Include="Models\Klant.cs" />
+    <Compile Include="Models\Library.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Webshop.cs" />
+    <Compile Include="Models\Winkelwagen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-Lumen.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -188,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
