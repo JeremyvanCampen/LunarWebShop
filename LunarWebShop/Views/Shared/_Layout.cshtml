@@ -18,14 +18,25 @@
                 </button>
                 @Html.ActionLink("Lunar", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Login", "Login", "Klant")</li>
-                    <li>@Html.ActionLink("Account aanmaken","Registratie","Klant" )</li>
-                </ul>
+        <div class="navbar-collapse collapse">
+        @if(User.Identity.IsAuthenticated)
+        {
+            <li>//links voor klanten</li>
+            if(User.IsInRole("Admin"))
+            {
+                <li>//links voor admins </li>
+            }
+        }
+        else
+        {
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <li>@Html.ActionLink("Login", "Login", "Klant")</li>
+                <li>@Html.ActionLink("Account aanmaken", "Registratie", "Klant")</li>
+            </ul>
+        }
             </div>
         </div>
     </div>

@@ -13,10 +13,10 @@ namespace LunarWebShop.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class LunarEntities1 : DbContext
+    public partial class LunarEntities2 : DbContext
     {
-        public LunarEntities1()
-            : base("name=LunarEntities1")
+        public LunarEntities2()
+            : base("name=LunarEntities2")
         {
         }
     
@@ -25,6 +25,12 @@ namespace LunarWebShop.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Klant> Klants { get; set; }
+        public virtual DbSet<Administrator> Administrator { get; set; }
+        public virtual DbSet<Bestelling> Bestelling { get; set; }
+        public virtual DbSet<Gebruiker> Gebruiker { get; set; }
+        public virtual DbSet<Keycode> Keycode { get; set; }
+        public virtual DbSet<Klant> Klant { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Table> Table { get; set; }
     }
 }

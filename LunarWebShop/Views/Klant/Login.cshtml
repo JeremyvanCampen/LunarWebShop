@@ -1,11 +1,9 @@
-﻿@model LunarWebShop.Models.Extended.KlantInloggen
+﻿@model LunarWebShop.Models.AccountManagement.Inloggen
 
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 
 @using (Html.BeginForm()) 
 {
@@ -49,9 +47,5 @@
 }
 
 <div>
-    @Html.ActionLink("Account aanmaken", "Registratie", "Klant")
+    @Html.ActionLink("Account maken", "Registratie")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -5,26 +5,25 @@ using System.Web;
 
 namespace LunarWebShop.Models
 {
-    public class Administrator : Gebruiker, ILibraryManagement
-    {
-        public int administratorID { get; set; }
-        public Administrator(int administratorID, string gebruikersnaam, string wachtwoord, string naam, string email, string adres) : base(gebruikersnaam, wachtwoord, naam, email, adres)
-        {
-            this.administratorID = administratorID;
-            this.gebruikersnaam = gebruikersnaam;
-            this.wachtwoord = wachtwoord;
-            this.naam = naam;
-            this.email = email;
-            this.adres = adres;
-        }
-        public void VerwijderProduct(Library library, Product product)
-        {
-            library.producten.Remove(product);
-        }
+    //public class Administrator : Gebruiker, ILibraryManagement
+    //{
+    //    //public Administrator(string voornaam, string achternaam, string gebruikersnaam, string wachtwoord, string email, DateTime geboortedatum) : base(voornaam, achternaam, gebruikersnaam, wachtwoord, email, geboortedatum)
+    //    //{
+    //    //    this.Voornaam = voornaam;
+    //    //    this.Achternaam = achternaam;
+    //    //    this.Gebruikersnaam = gebruikersnaam;
+    //    //    this.Wachtwoord = wachtwoord;
+    //    //    this.Email = email;
+    //    //    this.Geboortedatum = geboortedatum;
+    //    //}
+    //    //public void VerwijderProduct(Library library, Product product)
+    //    //{
+    //    //    library.producten.Remove(product);
+    //    //}
 
-        public void VoegProductToe(Library library, Product product)
-        {
-            library.producten.Add(product);
-        }
-    }
+    //    //public void VoegProductToe(Library library, Product product)
+    //    //{
+    //    //    library.producten.Add(product);
+    //    //}
+    //}
 }

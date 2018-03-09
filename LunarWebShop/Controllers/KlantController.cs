@@ -2,96 +2,68 @@
 using System.Collections.Generic;
 using System.EnterpriseServices;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.Services.Description;
 using LunarWebShop.Models;
-using LunarWebShop.Models.Extended;
+using LunarWebShop.Models.AccountManagement;
+
 
 namespace LunarWebShop.Controllers
 {
     public class KlantController : Controller
     {
-        // Registratie Action
+        //Registratie pagina
         [HttpGet]
         public ActionResult Registratie()
-
         {
             return View();
         }
 
-
-        //Na Registratie
+        //Registratie invoeren
         [HttpPost]
-        public ActionResult Registratie([Bind()]Klant klant)
+        public ActionResult Registratie([Bind()]Gebruiker user)
         {
-            using (LunarEntities1 dc = new LunarEntities1())
-            {
-                dc.Klants.Add(klant);
-                dc.SaveChanges();
-            }
-                return View(klant);
+            string message = "";
+            bool Status = false;
+            Account account = new Account();
+
+                if (account.CreateKlant(user))
+                {
+                    message = " Account succesvol aangemaakt U kunt nu inloggen";
+                    ViewBag.Message = message;
+                    ViewBag.Status = true;
+                    return View(user);
+                }
+                message = " Email of gebruikersnaam bestaat al";
+                ViewBag.Status = false;
+                ViewBag.Message = message;
+                return View(user);
         }
 
-        //Inloggen
         [HttpGet]
-
         public ActionResult Login()
         {
             return View();
         }
-        //Na Inloggen
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(KlantInloggen login, string ReturnUrl = "")
+        public ActionResult Login(Inloggen login)
         {
             string message = "";
-            using (LunarEntities1 dc = new LunarEntities1())
+            Account account = new Account();
+            if (account.Inloggen(login.Gebruikersnaam, login.Wachtwoord) == "Fout")
             {
-                var g = dc.Klants.Where(a => a.Gebruikersnaam == login.Gebruikersnaam).FirstOrDefault();
-                if (g != null)
-                {
-                    var p = dc.Klants.Where(a => a.Wachtwoord == login.Wachtwoord).FirstOrDefault();
-                    if (p != null)
-                    {
-                        //525600 min = 1 jaar
-                        int timeout = login.OnthoudtMijnInloggegevens ? 525600 : 20;
-                        var ticket = new FormsAuthenticationTicket(login.Gebruikersnaam,login.OnthoudtMijnInloggegevens, timeout);
-                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName);
-                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);
-
-                        if (Url.IsLocalUrl(ReturnUrl))
-                        {
-                            return Redirect(ReturnUrl);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                    }
-                    else
-                    {
-                        message = "Account gegevens bestaan niet.";
-                    }
-                }
-                else
-                {
-                    message = "Account gegevens bestaan niet.";
-                }
-            }
-            ViewBag.Message = message;
+                message = "Account gegevens bestaan niet.";
+                ViewBag.Message = message;
                 return View();
+
+            }
+            return RedirectToAction("Index", "Home");
         }
 
-        //Uitloggen
-        [Authorize]
-        [HttpPost]
-        public ActionResult Uitloggen()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Klant");
-        }
     }
 }
