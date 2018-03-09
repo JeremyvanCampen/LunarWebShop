@@ -5,15 +5,10 @@ using System.Linq;
 using System.Web;
 
 namespace LunarWebShop.Models
-{
-    [MetadataType(typeof(KlantMetaData))]
-    public partial class Klant
+{ 
+    public class Gebruiker
     {
-    public string BevestigWachtwoord { get; set; }
-    }
-
-    public class KlantMetaData
-    {
+        public int GebruikerID;
         [Display(Name = "Voornaam")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Voornaam moet ingevoerd worden!")]
         public string Voornaam { get; set; }
@@ -42,10 +37,9 @@ namespace LunarWebShop.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Display(Name = "GeboorteDatum")]
-        [DataType(dataType:DataType.Date)]
+        [Display(Name = "Geboortedatum")]
+        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime GeboorteDatum { get; set; }
-
+        public DateTime Geboortedatum { get; set; }
     }
 }
