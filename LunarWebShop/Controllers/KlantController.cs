@@ -42,6 +42,10 @@ namespace LunarWebShop.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (Session["Gebruikersnaam"] != null)
+            {
+                return RedirectToAction("Index", "Home", new {Gebruikersnaam = Session["Gebruikersnaam"].ToString()});
+            }
             return View();
         }
 
@@ -60,12 +64,24 @@ namespace LunarWebShop.Controllers
                 message = " Succesvol ingelogd.";
                 ViewBag.Message = message;
                 ViewBag.Status = true;
+
+                //Login Sessie aanmaken
+                Session["Klant"] = new Klant(){Gebruikersnaam = login.Gebruikersnaam};
+
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Status = false;
             //ViewBag.Message = message;
             return View();
         }
+
+        public ActionResult Uitloggen()
+        {
+            Session.Clear();
+            return RedirectToAction("Login", "Klant");
+        }
+
+
 
     }
 }

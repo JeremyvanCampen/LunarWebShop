@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using LunarWebShop.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,25 +19,30 @@
                 </button>
                 @Html.ActionLink("Lunar", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-        <div class="navbar-collapse collapse">
-        @if(User.Identity.IsAuthenticated)
-        {
-            <li>//links voor klanten</li>
-            if(User.IsInRole("Admin"))
-            {
-                <li>//links voor admins </li>
-            }
-        }
-        else
-        {
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                <li>@Html.ActionLink("Login", "Login", "Klant")</li>
-                <li>@Html.ActionLink("Account aanmaken", "RegistratieKlant", "Klant")</li>
-            </ul>
-        }
+            <div class="navbar-collapse collapse">
+                @{
+                    var klant = Session["Klant"] as Klant;
+                }
+                @if (klant != null)
+                {
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li> @Html.ActionLink("uitloggen", "Uitloggen", "Klant")</li>
+                        <li><h3 style="color: aliceblue; font-size: 15px;">Welkom, @klant.Gebruikersnaam</h3></li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Login", "Login", "Klant")</li>
+                        <li>@Html.ActionLink("Account aanmaken", "RegistratieKlant", "Klant")</li>
+                    </ul>
+                }
             </div>
         </div>
     </div>
