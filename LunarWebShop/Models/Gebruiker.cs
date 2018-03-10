@@ -18,11 +18,11 @@ namespace LunarWebShop.Models
         public string Achternaam { get; set; }
 
         [Display(Name = "Gebruikersnaam")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Achternaam moet ingevoerd worden!")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Gebruikersnaam moet ingevoerd worden!")]
         public string Gebruikersnaam { get; set; }
 
         [Display(Name = "Wachtwoord")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Achternaam moet ingevoerd worden!")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Wachtwoord moet ingevoerd worden!")]
         [DataType(dataType: DataType.Password)]
         [MinLength(6, ErrorMessage = "Wachtwoord moet minimaal 6 karakters lang zijn.")]
         public string Wachtwoord { get; set; }

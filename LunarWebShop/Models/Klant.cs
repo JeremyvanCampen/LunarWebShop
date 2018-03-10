@@ -6,10 +6,21 @@ using System.Web;
 
 namespace LunarWebShop.Models
 {
-    public class Klant
+    public class Klant:Gebruiker
 
     {
-        //public decimal Saldo { get; private set; }
+        public int KlantID { get; set; }
+
+        public decimal Saldo { get; private set; }
+
+        [Display(Name = "Straatnaam")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Straatnaam moet ingevoerd worden!")]
+        public string Straat { get; set; }
+
+        [Display(Name = "Huisnummer")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Huisnummer met ingevoerd worden")]
+        public int Huisnummer { get; set; }
+
         ////Producten in bezit
         //public List<Product> ProductenGekocht { get; private set; }
         ////Producten in winkelwagen

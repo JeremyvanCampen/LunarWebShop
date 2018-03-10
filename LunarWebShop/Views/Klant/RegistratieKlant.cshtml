@@ -1,9 +1,10 @@
-﻿@model LunarWebShop.Models.Gebruiker
+﻿@model LunarWebShop.Models.Klant
 
 @{
-    ViewBag.Title = "Registratie";
+    ViewBag.Title = "RegistratieKlant";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
 {
     if (ViewBag.Message != null)
@@ -20,8 +21,8 @@ else
     using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
+
         <div class="form-horizontal">
-            <h4>Gebruiker</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
@@ -81,8 +82,24 @@ else
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.Straat, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Straat, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Straat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Huisnummer, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Huisnummer, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Huisnummer, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="submit" value="Account aanmaken" class="btn btn-default" />
                 </div>
             </div>
         </div>
