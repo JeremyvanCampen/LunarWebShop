@@ -20,6 +20,66 @@ namespace LunarWebShop.Models.AccountManagement
 
             }
 
+        public string AdmministratorToevoegen(Administrator Admin)
+        {
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            //EmailCheck
+            SqlCommand checkemail = new SqlCommand("SELECT COUNT(*) FROM [Gebruiker] WHERE ([Email] = @email)", con);
+            checkemail.Parameters.AddWithValue("@email", Admin.Email);
+            int EmailBestaatal = (int)checkemail.ExecuteScalar();
+
+            //GebruikersnaamCheck
+            SqlCommand checkGebruikersnaam = new SqlCommand("SELECT COUNT(*) FROM [Gebruiker] WHERE ([Gebruikersnaam] = @gebruikersnaam)", con);
+            checkGebruikersnaam.Parameters.AddWithValue("@gebruikersnaam", Admin.Gebruikersnaam);
+            int GebruikerBestaatal = (int)checkGebruikersnaam.ExecuteScalar();
+
+            if (EmailBestaatal > 0)
+            {
+                //Gebruiker bestaat al kan niet worden toegevoegd
+                con.Close();
+                return " Email bestaat al";
+
+            }
+
+            else if (GebruikerBestaatal > 0)
+            {
+                //Gebruiker bestaat al kan niet worden toegevoegd
+                con.Close();
+                return " Gebruiker bestaat al";
+            }
+
+            try
+            {
+                //Gebruiker toevoegen aan database
+                string GebruikerQuery = "INSERT INTO Gebruiker(Voornaam,Achternaam,Gebruikersnaam,Wachtwoord,Email,Geboortedatum)";
+                GebruikerQuery += " VALUES (@voornaam, @achternaam, @gebruikersnaam, @wachtwoord, @email, @geboortedatum)";
+                SqlCommand cmd = new SqlCommand(GebruikerQuery, con);
+                cmd.Parameters.AddWithValue("@voornaam", Admin.Voornaam);
+                cmd.Parameters.AddWithValue("@achternaam", Admin.Achternaam);
+                cmd.Parameters.AddWithValue("@gebruikersnaam", Admin.Gebruikersnaam);
+                cmd.Parameters.AddWithValue("@wachtwoord", Admin.Wachtwoord);
+                cmd.Parameters.AddWithValue("@email", Admin.Email);
+                cmd.Parameters.AddWithValue("@geboortedatum", Admin.Geboortedatum);
+                cmd.ExecuteNonQuery();
+
+                //Klant aanmaken met Foreignkey van Gebruiker
+                string KlantQuery = "INSERT INTO Administrator(GebruikerID)";
+                KlantQuery += " VALUES ((SELECT GebruikerID FROM Gebruiker WHERE Gebruikersnaam = @gebruikersnaam))";
+                SqlCommand cmd2 = new SqlCommand(KlantQuery, con);
+                cmd2.Parameters.AddWithValue("@gebruikersnaam", Admin.Gebruikersnaam);
+                cmd2.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception e)
+            {
+                string error = e.ToString();
+                return error;
+            }
+            return "Succesvol";
+        }
+
         public string KlantToevoegen(Klant klant)
         {
             SqlConnection con = new SqlConnection(ConnectionString);

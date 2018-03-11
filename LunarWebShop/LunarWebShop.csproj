@@ -175,7 +175,7 @@
     <Content Include="App_Data\Lunar_log.ldf">
       <DependentUpon>Lunar.mdf</DependentUpon>
     </Content>
-    <Content Include="Content\bootstrap-Lumen.css" />
+    <Content Include="Content\bootstrap-Lux.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />

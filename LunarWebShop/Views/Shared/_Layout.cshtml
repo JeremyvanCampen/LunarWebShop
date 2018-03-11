@@ -8,51 +8,77 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Lunar", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                @{
-                    var klant = Session["Klant"] as Klant;
-                }
+<body style="padding-top: 0px;text-align: left">
+    @using LunarWebShop.Models
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="~/Home/Index">Lunar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @{
+                var klant = Session["Klant"] as Klant;
+            }
+            <div class="collapse navbar-collapse" id="navbarColor03">
                 @if (klant != null)
                 {
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        <li> @Html.ActionLink("uitloggen", "Uitloggen", "Klant")</li>
-                        <li><h3 style="color: aliceblue; font-size: 15px;">Welkom, @klant.Gebruikersnaam</h3></li>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            @Html.ActionLink("Home", "Index", "Home")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("About", "About", "Home")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Contact", "Contact", "Home")
+                        </li>
                     </ul>
+                    <form class="navbar-nav">
+                        <li class="nav-item">
+                            <a>Welkom, @klant.Gebruikersnaam</a>
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("uitloggen", "Uitloggen", "Klant")
+                        </li>
+                    </form>
                 }
                 else
                 {
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        <li>@Html.ActionLink("Login", "Login", "Klant")</li>
-                        <li>@Html.ActionLink("Account aanmaken", "RegistratieKlant", "Klant")</li>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            @Html.ActionLink("Home", "Index", "Home")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("About", "About", "Home")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Contact", "Contact", "Home")
+                        </li>
                     </ul>
+                    <form class="navbar-nav">
+                        <li class="nav-item">
+                            @Html.ActionLink("Login", "Login", "Klant")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Registreren", "RegistratieKlant", "Klant")
+                        </li>
+                    </form>
                 }
             </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-    </div>
+        </nav>
+@RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
 </html>
