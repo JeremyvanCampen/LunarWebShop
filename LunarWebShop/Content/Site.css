@@ -22,3 +22,6 @@ select,
 textarea {
     max-width: 280px;
 }
+.navbar-brand {
+    background-image: url(Images/shopping-cart-256.png);
+}
