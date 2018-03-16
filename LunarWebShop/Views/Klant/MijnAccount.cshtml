@@ -1,0 +1,39 @@
+﻿@using LunarWebShop.Models
+
+@{
+    ViewBag.Title = "MijnAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var klant = Session["Klant"] as Klant;
+}
+@if (klant != null)
+{
+
+    <center style="padding: 4rem 2rem;">
+        <h2>Uw gegevens</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Voornaam</th>
+                <th scope="col">Achternaam</th>
+                <th scope="col">Straat</th>
+                <th scope="col">Huisnummer</th>
+                <th scope="col">Email</th>
+                <th scope="col">Geboortedatum</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table">
+                <td>@klant.Voornaam</td>
+                <td>@klant.Achternaam</td>
+                <td>@klant.Straat</td>
+                <td>@klant.Huisnummer</td>
+                <td>@klant.Email</td>
+                <td>@klant.Geboortedatum</td>
+            </tr>
+            </tbody>
+        </table>
+    </center>
+}
+

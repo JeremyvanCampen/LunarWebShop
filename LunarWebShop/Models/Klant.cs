@@ -11,7 +11,7 @@ namespace LunarWebShop.Models
     {
         public int KlantID { get; set; }
 
-        public decimal Saldo { get; private set; }
+        public decimal Saldo { get; set; }
 
         [Display(Name = "Straatnaam")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Straatnaam moet ingevoerd worden!")]
@@ -20,6 +20,11 @@ namespace LunarWebShop.Models
         [Display(Name = "Huisnummer")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Huisnummer met ingevoerd worden")]
         public int Huisnummer { get; set; }
+
+        public void CreateSession()
+        {
+            
+        }
 
         ////Producten in bezit
         //public List<Product> ProductenGekocht { get; private set; }

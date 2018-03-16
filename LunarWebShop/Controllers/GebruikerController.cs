@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.Expressions;
 using LunarWebShop.Models;
 using LunarWebShop.Models.AccountManagement;
+using Microsoft.Ajax.Utilities;
 
 namespace LunarWebShop.Controllers
 {
@@ -57,17 +59,23 @@ namespace LunarWebShop.Controllers
             bool Status = false;
 
             Account account = new Account();
-            message = account.Inloggen(login.Gebruikersnaam, login.Wachtwoord);
+            var gebruiker = account.Inloggen(login.Gebruikersnaam, login.Wachtwoord);
 
-            if (message == "Succesvol")
+            if (gebruiker is Klant)
+            {
+
+                //Login Sessie aanmaken
+                Session["Klant"] = gebruiker;
+                return RedirectToAction("Index", "Home");
+            }
+            if (gebruiker is Administrator)
             {
                 message = " Succesvol ingelogd.";
                 ViewBag.Message = message;
                 ViewBag.Status = true;
 
                 //Login Sessie aanmaken
-                Session["Klant"] = new Klant(){Gebruikersnaam = login.Gebruikersnaam};
-
+                Session["Administrator"] = gebruiker;
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Status = false;
@@ -81,7 +89,14 @@ namespace LunarWebShop.Controllers
             return RedirectToAction("Login", "Klant");
         }
 
+        public ActionResult MijnAccount()
+        {
+            return View();
+        }
 
-
+        public ActionResult Beheer()
+        {
+            return View();
+        }
     }
 }

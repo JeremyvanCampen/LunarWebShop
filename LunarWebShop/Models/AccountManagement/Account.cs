@@ -143,28 +143,115 @@ namespace LunarWebShop.Models.AccountManagement
             return "Succesvol";
         }
 
-        public string Inloggen(string gebruikersnaam, string wachtwoord)
+        public object Inloggen(string gebruikersnaam, string wachtwoord)
         {
-            int result;
-            try
-            {
-                SqlConnection con = new SqlConnection(ConnectionString);
-                con.Open();
-                SqlCommand cmd = new SqlCommand(@"SELECT Count(*) FROM Gebruiker 
+
+            int resultGebruiker;
+            int resultKlant;
+            int resultAdmin;
+            SqlConnection con = new SqlConnection(ConnectionString);
+
+            //GebruikerCheck
+
+            con.Open();
+            SqlCommand cmd = new SqlCommand(@"SELECT GebruikerID FROM Gebruiker 
                                         WHERE Gebruikersnaam=@uname and 
                                         Wachtwoord=@pass", con);
-                cmd.Parameters.AddWithValue("@uname", gebruikersnaam);
-                cmd.Parameters.AddWithValue("@pass", wachtwoord);
-                result = (int)cmd.ExecuteScalar();
-            }
-            catch (Exception e)
+            cmd.Parameters.AddWithValue("@uname", gebruikersnaam);
+            cmd.Parameters.AddWithValue("@pass", wachtwoord);
+            resultGebruiker = (int)cmd.ExecuteScalar();
+            con.Close();
+
+            //KlantCheck
+
+            con.Open();
+            SqlCommand cmd1 = new SqlCommand(@"SELECT Count(*) FROM Klant 
+                                        WHERE GebruikerID=@gebruikerid", con);
+            cmd1.Parameters.AddWithValue("@gebruikerid", resultGebruiker);
+            resultKlant = (int)cmd1.ExecuteScalar();
+            con.Close();
+
+            //AdminCheck
+
+            con.Open();
+            SqlCommand cmd2 = new SqlCommand(@"SELECT Count(*) FROM Administrator 
+                                        WHERE GebruikerID=@gebruikerid", con);
+            cmd2.Parameters.AddWithValue("@gebruikerid", resultGebruiker);
+            resultAdmin = (int)cmd2.ExecuteScalar();
+            con.Close();
+
+
+            //Inloggegevens kloppen en diegene die inlogt is een Klant
+
+            if (resultKlant > 0)
             {
-                string error = e.ToString();
-                return error;
+               //Klant aanmaken en gegevens invullen vanuit de database
+                Klant klant = new Klant();
+                SqlCommand cmd3 = new SqlCommand(@"SELECT GebruikerID, Voornaam, Achternaam, Email, Geboortedatum  FROM Gebruiker 
+                                        WHERE Gebruikersnaam=@uname and 
+                                        Wachtwoord=@pass", con);
+                cmd3.Parameters.AddWithValue("@uname", gebruikersnaam);
+                cmd3.Parameters.AddWithValue("@pass", wachtwoord);
+                con.Open();
+
+                using (SqlDataReader reader = cmd3.ExecuteReader()) 
+                {
+                    while (reader.Read())
+                    {
+                        klant.GebruikerID = reader.GetInt32(0);
+                        klant.Voornaam = reader.GetString(1);
+                        klant.Achternaam = reader.GetString(2);
+                        klant.Email = reader.GetString(3);
+                        klant.Geboortedatum = reader.GetDateTime(4);
+                        klant.Gebruikersnaam = gebruikersnaam;
+                    }
+                }
+
+                SqlCommand cmd8 = new SqlCommand(@"SELECT Saldo, Straat, Huisnummer FROM Klant 
+                                        WHERE GebruikerID=@gebruikerid", con);
+                cmd8.Parameters.AddWithValue("@gebruikerid", klant.GebruikerID);
+
+                using (SqlDataReader reader2 = cmd8.ExecuteReader())
+                {
+                    while (reader2.Read())
+                    {
+                        klant.Saldo = reader2.GetDecimal(0);
+                        klant.Straat = reader2.GetString(1);
+                        klant.Huisnummer = reader2.GetInt32(2);
+                    }
+                }
+                con.Close();
+                return klant;
+
             }
-            if (result > 0)
+
+            //Inloggegevens kloppen en diegene die inlogt is een Administrator
+
+            if (resultAdmin > 0)
             {
-                return "Succesvol";
+                //Klant aanmaken en gegevens invullen vanuit de database
+                Administrator Administrator = new Administrator();
+                SqlCommand cmd3 = new SqlCommand(@"SELECT GebruikerID, Voornaam, Achternaam, Email, Geboortedatum  FROM Gebruiker 
+                                        WHERE Gebruikersnaam=@uname and 
+                                        Wachtwoord=@pass", con);
+                cmd3.Parameters.AddWithValue("@uname", gebruikersnaam);
+                cmd3.Parameters.AddWithValue("@pass", wachtwoord);
+                con.Open();
+
+                using (SqlDataReader reader = cmd3.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Administrator.GebruikerID = reader.GetInt32(0);
+                        Administrator.Voornaam = reader.GetString(1);
+                        Administrator.Achternaam = reader.GetString(2);
+                        Administrator.Email = reader.GetString(3);
+                        Administrator.Geboortedatum = reader.GetDateTime(4);
+                        Administrator.Gebruikersnaam = gebruikersnaam;
+                    }
+                }
+                con.Close();
+                return Administrator;
             }
 
             return "Fout";

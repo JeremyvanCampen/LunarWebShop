@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 
 namespace LunarWebShop.Models
 { 
-    public class Gebruiker
+    public abstract class Gebruiker
     {
         public int GebruikerID;
         [Display(Name = "Voornaam")]

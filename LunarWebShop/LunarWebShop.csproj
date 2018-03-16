@@ -150,7 +150,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\KlantController.cs" />
+    <Compile Include="Controllers\GebruikerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -214,6 +214,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Klant\RegistratieKlant.cshtml" />
     <Content Include="Views\Klant\Login.cshtml" />
+    <Content Include="Views\Klant\MijnAccount.cshtml" />
+    <Content Include="Views\Klant\Beheer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
