@@ -1,0 +1,75 @@
+﻿@using LunarWebShop.Models
+@model IEnumerable<LunarWebShop.Models.Product>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["Administrator"] == null)
+{
+    Response.Redirect("../Home/Index");
+}
+else
+{
+    var Admin = Session["Administrator"] as Administrator;
+
+    if (Admin != null)
+    {
+
+        <center style="padding: 4rem 2rem;">
+            <h2>Product</h2>
+
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Naam)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Uitgever)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Genre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Prijs)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Foto)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Naam)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Uitgever)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Genre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Prijs)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Foto)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new {id = item.ProductID}) |
+                            @Html.ActionLink("Details", "Details", new {id = item.ProductID}) |
+                            @Html.ActionLink("Delete", "Delete", new {id = item.ProductID})
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </center>
+    }
+}

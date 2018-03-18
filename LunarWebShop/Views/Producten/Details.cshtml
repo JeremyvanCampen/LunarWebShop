@@ -1,0 +1,74 @@
+﻿@using LunarWebShop.Models
+@model LunarWebShop.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["Administrator"] == null)
+{
+    Response.Redirect("../Home/Index");
+}
+else
+{
+    var Admin = Session["Administrator"] as Administrator;
+
+    if (Admin != null)
+    {
+        <center style="padding: 4rem 2rem;">
+            <h2>Details</h2>
+
+            <div>
+                <h4>Product</h4>
+                <hr/>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Naam)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Naam)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Uitgever)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Uitgever)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Genre)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Genre)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Prijs)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Prijs)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Foto)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Foto)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new {id = Model.ProductID}) |
+                @Html.ActionLink("Back to List", "Product")
+            </p>
+
+        </center>
+    }
+}

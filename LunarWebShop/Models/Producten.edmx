@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Product.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="AdministratorID" />
+          </Key>
+          <Property Name="AdministratorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GebruikerID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bestelling">
+          <Key>
+            <PropertyRef Name="BestellingID" />
+          </Key>
+          <Property Name="BestellingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdministratorID" Type="int" Nullable="false" />
+          <Property Name="KlantID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Gebruiker">
+          <Key>
+            <PropertyRef Name="GebruikerID" />
+          </Key>
+          <Property Name="GebruikerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Voornaam" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Achternaam" Type="varchar" MaxLength="50" />
+          <Property Name="Gebruikersnaam" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Wachtwoord" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Geboortedatum" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Keycode">
+          <Key>
+            <PropertyRef Name="KeycodeID" />
+          </Key>
+          <Property Name="KeycodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KlantID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="BestellingID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naam" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Uitgever" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prijs" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Administrator_ToTable">
+          <End Role="Gebruiker" Type="Self.Gebruiker" Multiplicity="1" />
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gebruiker">
+              <PropertyRef Name="GebruikerID" />
+            </Principal>
+            <Dependent Role="Administrator">
+              <PropertyRef Name="GebruikerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bestelling_ToTable">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="1" />
+          <End Role="Bestelling" Type="Self.Bestelling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="Bestelling">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keycode_ToTable_1">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keycode_ToTable_2">
+          <End Role="Bestelling" Type="Self.Bestelling" Multiplicity="1" />
+          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bestelling">
+              <PropertyRef Name="BestellingID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="BestellingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProductStoreContainer">
+          <EntitySet Name="Administrator" EntityType="Self.Administrator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bestelling" EntityType="Self.Bestelling" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gebruiker" EntityType="Self.Gebruiker" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Keycode" EntityType="Self.Keycode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Administrator_ToTable" Association="Self.FK_Administrator_ToTable">
+            <End Role="Gebruiker" EntitySet="Gebruiker" />
+            <End Role="Administrator" EntitySet="Administrator" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bestelling_ToTable" Association="Self.FK_Bestelling_ToTable">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="Bestelling" EntitySet="Bestelling" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keycode_ToTable_1" Association="Self.FK_Keycode_ToTable_1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keycode_ToTable_2" Association="Self.FK_Keycode_ToTable_2">
+            <End Role="Bestelling" EntitySet="Bestelling" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Product" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="AdministratorID" />
+          </Key>
+          <Property Name="AdministratorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GebruikerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Gebruiker" Relationship="Self.FK_Administrator_ToTable" FromRole="Administrator" ToRole="Gebruiker" />
+          <NavigationProperty Name="Bestelling" Relationship="Self.FK_Bestelling_ToTable" FromRole="Administrator" ToRole="Bestelling" />
+        </EntityType>
+        <EntityType Name="Bestelling">
+          <Key>
+            <PropertyRef Name="BestellingID" />
+          </Key>
+          <Property Name="BestellingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdministratorID" Type="Int32" Nullable="false" />
+          <Property Name="KlantID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_Bestelling_ToTable" FromRole="Bestelling" ToRole="Administrator" />
+          <NavigationProperty Name="Keycode" Relationship="Self.FK_Keycode_ToTable_2" FromRole="Bestelling" ToRole="Keycode" />
+        </EntityType>
+        <EntityType Name="Gebruiker">
+          <Key>
+            <PropertyRef Name="GebruikerID" />
+          </Key>
+          <Property Name="GebruikerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Voornaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Achternaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gebruikersnaam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Wachtwoord" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Geboortedatum" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_Administrator_ToTable" FromRole="Gebruiker" ToRole="Administrator" />
+        </EntityType>
+        <EntityType Name="Keycode">
+          <Key>
+            <PropertyRef Name="KeycodeID" />
+          </Key>
+          <Property Name="KeycodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KlantID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="BestellingID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bestelling" Relationship="Self.FK_Keycode_ToTable_2" FromRole="Keycode" ToRole="Bestelling" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Keycode_ToTable_1" FromRole="Keycode" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Uitgever" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Prijs" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Keycode" Relationship="Self.FK_Keycode_ToTable_1" FromRole="Product" ToRole="Keycode" />
+        </EntityType>
+        <Association Name="FK_Administrator_ToTable">
+          <End Role="Gebruiker" Type="Self.Gebruiker" Multiplicity="1" />
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gebruiker">
+              <PropertyRef Name="GebruikerID" />
+            </Principal>
+            <Dependent Role="Administrator">
+              <PropertyRef Name="GebruikerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bestelling_ToTable">
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="1" />
+          <End Role="Bestelling" Type="Self.Bestelling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrator">
+              <PropertyRef Name="AdministratorID" />
+            </Principal>
+            <Dependent Role="Bestelling">
+              <PropertyRef Name="AdministratorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keycode_ToTable_2">
+          <End Role="Bestelling" Type="Self.Bestelling" Multiplicity="1" />
+          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bestelling">
+              <PropertyRef Name="BestellingID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="BestellingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keycode_ToTable_1">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Producten" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrator" EntityType="Self.Administrator" />
+          <EntitySet Name="Bestelling" EntityType="Self.Bestelling" />
+          <EntitySet Name="Gebruiker" EntityType="Self.Gebruiker" />
+          <EntitySet Name="Keycode" EntityType="Self.Keycode" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <AssociationSet Name="FK_Administrator_ToTable" Association="Self.FK_Administrator_ToTable">
+            <End Role="Gebruiker" EntitySet="Gebruiker" />
+            <End Role="Administrator" EntitySet="Administrator" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bestelling_ToTable" Association="Self.FK_Bestelling_ToTable">
+            <End Role="Administrator" EntitySet="Administrator" />
+            <End Role="Bestelling" EntitySet="Bestelling" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keycode_ToTable_2" Association="Self.FK_Keycode_ToTable_2">
+            <End Role="Bestelling" EntitySet="Bestelling" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keycode_ToTable_1" Association="Self.FK_Keycode_ToTable_1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProductStoreContainer" CdmEntityContainer="Producten">
+          <EntitySetMapping Name="Administrator">
+            <EntityTypeMapping TypeName="Product.Administrator">
+              <MappingFragment StoreEntitySet="Administrator">
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="GebruikerID" ColumnName="GebruikerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bestelling">
+            <EntityTypeMapping TypeName="Product.Bestelling">
+              <MappingFragment StoreEntitySet="Bestelling">
+                <ScalarProperty Name="BestellingID" ColumnName="BestellingID" />
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="KlantID" ColumnName="KlantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gebruiker">
+            <EntityTypeMapping TypeName="Product.Gebruiker">
+              <MappingFragment StoreEntitySet="Gebruiker">
+                <ScalarProperty Name="GebruikerID" ColumnName="GebruikerID" />
+                <ScalarProperty Name="Voornaam" ColumnName="Voornaam" />
+                <ScalarProperty Name="Achternaam" ColumnName="Achternaam" />
+                <ScalarProperty Name="Gebruikersnaam" ColumnName="Gebruikersnaam" />
+                <ScalarProperty Name="Wachtwoord" ColumnName="Wachtwoord" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Geboortedatum" ColumnName="Geboortedatum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Keycode">
+            <EntityTypeMapping TypeName="Product.Keycode">
+              <MappingFragment StoreEntitySet="Keycode">
+                <ScalarProperty Name="KeycodeID" ColumnName="KeycodeID" />
+                <ScalarProperty Name="KlantID" ColumnName="KlantID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="BestellingID" ColumnName="BestellingID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="Product.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Naam" ColumnName="Naam" />
+                <ScalarProperty Name="Uitgever" ColumnName="Uitgever" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Prijs" ColumnName="Prijs" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -152,6 +152,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\GebruikerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductenController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -165,7 +166,24 @@
     <Compile Include="Models\ILibraryManagement.cs" />
     <Compile Include="Models\Klant.cs" />
     <Compile Include="Models\Library.cs" />
-    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>ProductData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductData.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Webshop.cs" />
     <Compile Include="Models\Winkelwagen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -184,10 +202,27 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\Cod.jfif" />
     <Content Include="Images\shopping-cart-32.png" />
+    <Content Include="Models\ProductData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProductData.edmx</DependentUpon>
+      <LastGenOutput>ProductData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ProductData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProductData.edmx</DependentUpon>
+      <LastGenOutput>ProductData.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EntityDeploy Include="Models\ProductData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ProductData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ProductData.edmx.diagram">
+      <DependentUpon>ProductData.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -217,7 +252,11 @@
     <Content Include="Views\Klant\RegistratieKlant.cshtml" />
     <Content Include="Views\Klant\Login.cshtml" />
     <Content Include="Views\Klant\MijnAccount.cshtml" />
-    <Content Include="Views\Klant\Beheer.cshtml" />
+    <Content Include="Views\Producten\Product.cshtml" />
+    <Content Include="Views\Producten\Create.cshtml" />
+    <Content Include="Views\Producten\Edit.cshtml" />
+    <Content Include="Views\Producten\Delete.cshtml" />
+    <Content Include="Views\Producten\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

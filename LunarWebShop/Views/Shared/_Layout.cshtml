@@ -84,6 +84,9 @@
                                             <a>Welkom Admin, @admin.Voornaam @admin.Achternaam</a>
                                         </li>
                                         <li class="nav-item">
+                                            @Html.ActionLink("Dashboard", "Product", "Producten", null, new { @style = "color:White;" })
+                                        </li>
+                                        <li class="nav-item">
                                             @Html.ActionLink("uitloggen", "Uitloggen", "Klant", null, new { @style = "color:White;" })
                                         </li>
                                     </form>
