@@ -12,6 +12,7 @@ namespace LunarWebShop.Controllers
 {
     public class KlantController : Controller
     {
+        LunarProduct _database = new LunarProduct();
         //Registratie pagina
         [HttpGet]
         public ActionResult RegistratieKlant()
@@ -78,8 +79,10 @@ namespace LunarWebShop.Controllers
                 Session["Administrator"] = gebruiker;
                 return RedirectToAction("Index", "Home");
             }
+
+            message = gebruiker.ToString();
             ViewBag.Status = false;
-            //ViewBag.Message = message;
+            ViewBag.Message = message;
             return View();
         }
 

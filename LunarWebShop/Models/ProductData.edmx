@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LunarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bestelling">
+          <Key>
+            <PropertyRef Name="BestellingID" />
+          </Key>
+          <Property Name="BestellingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdministratorID" Type="int" Nullable="false" />
+          <Property Name="KlantID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Keycode">
           <Key>
             <PropertyRef Name="KeycodeID" />
@@ -37,11 +45,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Keycode_ToTable_2">
+          <End Role="Bestelling" Type="Self.Bestelling" Multiplicity="0..1" />
+          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bestelling">
+              <PropertyRef Name="BestellingID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="BestellingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="LunarModelStoreContainer">
+          <EntitySet Name="Bestelling" EntityType="Self.Bestelling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Keycode" EntityType="Self.Keycode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Keycode_ToTable_1" Association="Self.FK_Keycode_ToTable_1">
             <End Role="Product" EntitySet="Product" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keycode_ToTable_2" Association="Self.FK_Keycode_ToTable_2">
+            <End Role="Bestelling" EntitySet="Bestelling" />
             <End Role="Keycode" EntitySet="Keycode" />
           </AssociationSet>
         </EntityContainer>
@@ -68,6 +93,11 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="Keycode" EntitySet="Keycode" />
           </AssociationSet>
+          <EntitySet Name="Bestelling" EntityType="LunarModel.Bestelling" />
+          <AssociationSet Name="FK_Keycode_ToTable_2" Association="LunarModel.FK_Keycode_ToTable_2">
+            <End Role="Bestelling" EntitySet="Bestelling" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
         </EntityContainer>
         <EnumType Name="Uitgever" a:ExternalTypeName="Uitgever" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="Genre" a:ExternalTypeName="Genre" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -80,6 +110,7 @@
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="BestellingID" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="LunarModel.FK_Keycode_ToTable_1" FromRole="Keycode" ToRole="Product" />
+          <NavigationProperty Name="Bestelling" Relationship="LunarModel.FK_Keycode_ToTable_2" FromRole="Keycode" ToRole="Bestelling" />
         </EntityType>
         <Association Name="FK_Keycode_ToTable_1">
           <End Type="LunarModel.Product" Role="Product" Multiplicity="1" />
@@ -90,6 +121,27 @@
             </Principal>
             <Dependent Role="Keycode">
               <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Bestelling">
+          <Key>
+            <PropertyRef Name="BestellingID" />
+          </Key>
+          <Property Name="BestellingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdministratorID" Type="Int32" Nullable="false" />
+          <Property Name="KlantID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Keycode" Relationship="LunarModel.FK_Keycode_ToTable_2" FromRole="Bestelling" ToRole="Keycode" />
+        </EntityType>
+        <Association Name="FK_Keycode_ToTable_2">
+          <End Type="LunarModel.Bestelling" Role="Bestelling" Multiplicity="0..1" />
+          <End Type="LunarModel.Keycode" Role="Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bestelling">
+              <PropertyRef Name="BestellingID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="BestellingID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -118,6 +170,15 @@
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="KlantID" ColumnName="KlantID" />
                 <ScalarProperty Name="KeycodeID" ColumnName="KeycodeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bestelling">
+            <EntityTypeMapping TypeName="LunarModel.Bestelling">
+              <MappingFragment StoreEntitySet="Bestelling">
+                <ScalarProperty Name="KlantID" ColumnName="KlantID" />
+                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
+                <ScalarProperty Name="BestellingID" ColumnName="BestellingID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

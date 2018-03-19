@@ -152,16 +152,26 @@ namespace LunarWebShop.Models.AccountManagement
             SqlConnection con = new SqlConnection(ConnectionString);
 
             //GebruikerCheck
-
-            con.Open();
-            SqlCommand cmd = new SqlCommand(@"SELECT GebruikerID FROM Gebruiker 
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(@"SELECT GebruikerID FROM Gebruiker 
                                         WHERE Gebruikersnaam=@uname and 
                                         Wachtwoord=@pass", con);
-            cmd.Parameters.AddWithValue("@uname", gebruikersnaam);
-            cmd.Parameters.AddWithValue("@pass", wachtwoord);
-            resultGebruiker = (int)cmd.ExecuteScalar();
-            con.Close();
+                cmd.Parameters.AddWithValue("@uname", gebruikersnaam);
+                cmd.Parameters.AddWithValue("@pass", wachtwoord);
+                resultGebruiker = (int)cmd.ExecuteScalar();
+                con.Close();
+            }
+                catch (Exception e)
+            {
+                Console.WriteLine(e);
+                con.Close();
+                return " Account Gegevens bestaan niet.";
+            }
 
+            try
+            {
             //KlantCheck
 
             con.Open();
@@ -253,8 +263,14 @@ namespace LunarWebShop.Models.AccountManagement
                 con.Close();
                 return Administrator;
             }
+            }
+            catch (Exception e)
+            {
+                string error = e.ToString();
+                return error; ;
+            }
 
-            return "Fout";
+            return " Onbekende fout";
         }
     }
 }

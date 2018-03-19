@@ -27,5 +27,6 @@ namespace LunarWebShop.Models
     
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Keycode> Keycode { get; set; }
+        public virtual DbSet<Bestelling> Bestelling { get; set; }
     }
 }

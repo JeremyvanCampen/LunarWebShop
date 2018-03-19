@@ -24,8 +24,6 @@ namespace LunarWebShop.Models
         public int AdministratorID { get; set; }
         public int KlantID { get; set; }
     
-        public virtual Administrator Administrator { get; set; }
-        public virtual Klant Klant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Keycode> Keycode { get; set; }
     }

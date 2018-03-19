@@ -159,6 +159,9 @@
     <Compile Include="Models\AccountManagement\Account.cs" />
     <Compile Include="Models\AccountManagement\Inloggen.cs" />
     <Compile Include="Models\Administrator.cs" />
+    <Compile Include="Models\Bestelling.cs">
+      <DependentUpon>ProductData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Enums\BetaalMethode.cs" />
     <Compile Include="Models\Enums\Genre.cs" />
     <Compile Include="Models\Enums\Uitgever.cs" />

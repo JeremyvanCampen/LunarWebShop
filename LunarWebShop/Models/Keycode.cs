@@ -20,5 +20,6 @@ namespace LunarWebShop.Models
         public Nullable<int> BestellingID { get; set; }
     
         public virtual Product Product { get; set; }
+        public virtual Bestelling Bestelling { get; set; }
     }
 }
