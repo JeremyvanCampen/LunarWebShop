@@ -164,6 +164,9 @@
     <Compile Include="Models\Enums\Uitgever.cs" />
     <Compile Include="Models\Gebruiker.cs" />
     <Compile Include="Models\ILibraryManagement.cs" />
+    <Compile Include="Models\Keycode.cs">
+      <DependentUpon>ProductData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Klant.cs" />
     <Compile Include="Models\Library.cs" />
     <Compile Include="Models\Product.cs">
@@ -184,6 +187,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProductData.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModelProductKeycode.cs" />
     <Compile Include="Models\Webshop.cs" />
     <Compile Include="Models\Winkelwagen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

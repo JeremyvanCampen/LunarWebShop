@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="ef0e07de137646bda5fdef3b32649483" Name="Diagram1">
         <EntityTypeShape EntityType="LunarModel.Product" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LunarModel.Keycode" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="LunarModel.FK_Keycode_ToTable_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

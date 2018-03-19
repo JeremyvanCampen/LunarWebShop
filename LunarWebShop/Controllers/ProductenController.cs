@@ -20,7 +20,12 @@ namespace LunarWebShop.Controllers
         public ActionResult Details(int id)
         {
             Product Product = _database.Product.Find(id);
-            return View(Product);
+            Keycode keycode = _database.Keycode.Find(id);
+            ViewModelProductKeycode ViewModelProductKeycode = new ViewModelProductKeycode();
+            ViewModelProductKeycode.keycode = keycode;
+            ViewModelProductKeycode.Product = Product;
+
+            return View(ViewModelProductKeycode);
         }
 
         // GET: Producten/Create
@@ -37,12 +42,16 @@ namespace LunarWebShop.Controllers
             try
             {
                 // TODO: Add insert logic here
+                Keycode keycode = new Keycode();
+                keycode.ProductID = product.ProductID;
                 _database.Product.Add(product);
+                _database.Keycode.Add(keycode);
                 _database.SaveChanges();
                 return RedirectToAction("Product");
             }
-            catch
+            catch(Exception ex)
             {
+                string error = ex.ToString();
                 return View();
             }
         }
@@ -89,6 +98,7 @@ namespace LunarWebShop.Controllers
         public ActionResult Delete(int id)
         {
             Product product = _database.Product.Find(id);
+            _database.Keycode.RemoveRange(_database.Keycode.Where(x => x.ProductID == id));
             _database.Product.Remove(product);
             _database.SaveChanges();
             return RedirectToAction("Product");

@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LunarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Keycode">
+          <Key>
+            <PropertyRef Name="KeycodeID" />
+          </Key>
+          <Property Name="KeycodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KlantID" Type="int" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="BestellingID" Type="int" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductID" />
@@ -14,10 +23,27 @@
           <Property Name="Uitgever" Type="int" Nullable="false" />
           <Property Name="Genre" Type="int" Nullable="false" />
           <Property Name="Prijs" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Foto" Type="image" />
+          <Property Name="Foto" Type="varbinary(max)" />
         </EntityType>
+        <Association Name="FK_Keycode_ToTable_1">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="LunarModelStoreContainer">
+          <EntitySet Name="Keycode" EntityType="Self.Keycode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Keycode_ToTable_1" Association="Self.FK_Keycode_ToTable_1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -33,12 +59,40 @@
           <Property Name="Genre" Type="LunarModel.Genre" Nullable="false" />
           <Property Name="Prijs" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Keycode" Relationship="LunarModel.FK_Keycode_ToTable_1" FromRole="Product" ToRole="Keycode" />
         </EntityType>
         <EntityContainer Name="LunarProduct" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="Keycode" EntityType="LunarModel.Keycode" />
+          <AssociationSet Name="FK_Keycode_ToTable_1" Association="LunarModel.FK_Keycode_ToTable_1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Keycode" EntitySet="Keycode" />
+          </AssociationSet>
         </EntityContainer>
         <EnumType Name="Uitgever" a:ExternalTypeName="Uitgever" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="Genre" a:ExternalTypeName="Genre" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="Keycode">
+          <Key>
+            <PropertyRef Name="KeycodeID" />
+          </Key>
+          <Property Name="KeycodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KlantID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="BestellingID" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="LunarModel.FK_Keycode_ToTable_1" FromRole="Keycode" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Keycode_ToTable_1">
+          <End Type="LunarModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="LunarModel.Keycode" Role="Keycode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Keycode">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -54,6 +108,16 @@
                 <ScalarProperty Name="Genre" ColumnName="Genre" />
                 <ScalarProperty Name="Prijs" ColumnName="Prijs" />
                 <ScalarProperty Name="Foto" ColumnName="Foto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Keycode">
+            <EntityTypeMapping TypeName="LunarModel.Keycode">
+              <MappingFragment StoreEntitySet="Keycode">
+                <ScalarProperty Name="BestellingID" ColumnName="BestellingID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="KlantID" ColumnName="KlantID" />
+                <ScalarProperty Name="KeycodeID" ColumnName="KeycodeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

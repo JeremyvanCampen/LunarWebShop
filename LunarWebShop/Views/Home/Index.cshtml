@@ -1,45 +1,19 @@
 ﻿@model IEnumerable<LunarWebShop.Models.Product>
 
 <center style="padding: 4rem 2rem;">
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Naam)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Uitgever)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Genre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Prijs)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Foto)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naam)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Uitgever)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prijs)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Foto)
-            </td>
-        </tr>
+    @foreach (var item in Model)
+    {
+        <div style="display: inline-block; padding-right: 50px;">
+            <div class="card bg-secondary mb-3" style="max-width: 20rem; ">
+                <div class="card-header"><h7 style="color: black">@Html.DisplayFor(modelItem => item.Naam)</h7></div>
+                <div class="card-body">
+                    <h4 class="card-title"></h4>
+                    <p class="card-text"><img style="width: 100%;" src="~/Images/Cod.jfif" class="img-responsive" alt="a"/></p>
+                </div>
+                <div class="card-footer"><h4 style="color: greenyellow">€@Html.DisplayFor(modelItem => item.Prijs)</h4><a href="http://www.jquery2dotnet.com" class="hidden-sm">Toevoegen aan winkelwagen</a><br/><a href="http://www.jquery2dotnet.com" class="hidden-sm">Details</a>
+                </div>
+            </div>
+        </div>
     }
-
-</table>
 </center>

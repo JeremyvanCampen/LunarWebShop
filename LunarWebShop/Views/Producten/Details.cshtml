@@ -1,5 +1,5 @@
 ﻿@using LunarWebShop.Models
-@model LunarWebShop.Models.Product
+@model LunarWebShop.Models.ViewModelProductKeycode
 
 @{
     ViewBag.Title = "Details";
@@ -23,49 +23,55 @@ else
                 <hr/>
                 <dl class="dl-horizontal">
                     <dt>
-                        @Html.DisplayNameFor(model => model.Naam)
+                        @Html.DisplayNameFor(model => model.Product.Naam)
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Naam)
+                        @Html.DisplayFor(model => model.Product.Naam)
                     </dd>
 
                     <dt>
-                        @Html.DisplayNameFor(model => model.Uitgever)
+                        @Html.DisplayNameFor(model => model.Product.Uitgever)
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Uitgever)
+                        @Html.DisplayFor(model => model.Product.Uitgever)
                     </dd>
 
                     <dt>
-                        @Html.DisplayNameFor(model => model.Genre)
+                        @Html.DisplayNameFor(model => model.Product.Genre)
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Genre)
+                        @Html.DisplayFor(model => model.Product.Genre)
                     </dd>
 
                     <dt>
-                        @Html.DisplayNameFor(model => model.Prijs)
+                        @Html.DisplayNameFor(model => model.Product.Prijs)
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Prijs)
+                        @Html.DisplayFor(model => model.Product.Prijs)
                     </dd>
 
                     <dt>
-                        @Html.DisplayNameFor(model => model.Foto)
+                        @Html.DisplayNameFor(model => model.Product.Foto)
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.Foto)
+                        @Html.DisplayFor(model => model.Product.Foto)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.keycode.KeycodeID)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.keycode.KeycodeID)
                     </dd>
 
                 </dl>
             </div>
             <p>
-                @Html.ActionLink("Edit", "Edit", new {id = Model.ProductID}) |
+                @Html.ActionLink("Edit", "Edit", new {id = Model.Product.ProductID}) |
                 @Html.ActionLink("Back to List", "Product")
             </p>
 
