@@ -17,9 +17,7 @@ namespace LunarWebShop.Models
         public int KeycodeID { get; set; }
         public Nullable<int> KlantID { get; set; }
         public int ProductID { get; set; }
-        public Nullable<int> BestellingID { get; set; }
     
         public virtual Product Product { get; set; }
-        public virtual Bestelling Bestelling { get; set; }
     }
 }

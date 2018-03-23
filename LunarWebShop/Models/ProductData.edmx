@@ -5,14 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LunarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Bestelling">
-          <Key>
-            <PropertyRef Name="BestellingID" />
-          </Key>
-          <Property Name="BestellingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AdministratorID" Type="int" Nullable="false" />
-          <Property Name="KlantID" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Keycode">
           <Key>
             <PropertyRef Name="KeycodeID" />
@@ -20,7 +12,6 @@
           <Property Name="KeycodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="KlantID" Type="int" />
           <Property Name="ProductID" Type="int" Nullable="false" />
-          <Property Name="BestellingID" Type="int" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -32,6 +23,14 @@
           <Property Name="Genre" Type="int" Nullable="false" />
           <Property Name="Prijs" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Foto" Type="varbinary(max)" />
+          <Property Name="WinkelwagenID" Type="int" />
+        </EntityType>
+        <EntityType Name="Winkelwagen">
+          <Key>
+            <PropertyRef Name="WinkelwagenID" />
+          </Key>
+          <Property Name="WinkelwagenID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KlantID" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Keycode_ToTable_1">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
@@ -45,29 +44,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Keycode_ToTable_2">
-          <End Role="Bestelling" Type="Self.Bestelling" Multiplicity="0..1" />
-          <End Role="Keycode" Type="Self.Keycode" Multiplicity="*" />
+        <Association Name="FK_Product_ToTable">
+          <End Role="Winkelwagen" Type="Self.Winkelwagen" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Bestelling">
-              <PropertyRef Name="BestellingID" />
+            <Principal Role="Winkelwagen">
+              <PropertyRef Name="WinkelwagenID" />
             </Principal>
-            <Dependent Role="Keycode">
-              <PropertyRef Name="BestellingID" />
+            <Dependent Role="Product">
+              <PropertyRef Name="WinkelwagenID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="LunarModelStoreContainer">
-          <EntitySet Name="Bestelling" EntityType="Self.Bestelling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Keycode" EntityType="Self.Keycode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Winkelwagen" EntityType="Self.Winkelwagen" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Keycode_ToTable_1" Association="Self.FK_Keycode_ToTable_1">
             <End Role="Product" EntitySet="Product" />
             <End Role="Keycode" EntitySet="Keycode" />
           </AssociationSet>
-          <AssociationSet Name="FK_Keycode_ToTable_2" Association="Self.FK_Keycode_ToTable_2">
-            <End Role="Bestelling" EntitySet="Bestelling" />
-            <End Role="Keycode" EntitySet="Keycode" />
+          <AssociationSet Name="FK_Product_ToTable" Association="Self.FK_Product_ToTable">
+            <End Role="Winkelwagen" EntitySet="Winkelwagen" />
+            <End Role="Product" EntitySet="Product" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -85,6 +84,8 @@
           <Property Name="Prijs" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Keycode" Relationship="LunarModel.FK_Keycode_ToTable_1" FromRole="Product" ToRole="Keycode" />
+          <Property Name="WinkelwagenID" Type="Int32" />
+          <NavigationProperty Name="Winkelwagen" Relationship="LunarModel.FK_Product_ToTable" FromRole="Product" ToRole="Winkelwagen" />
         </EntityType>
         <EntityContainer Name="LunarProduct" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Product" EntityType="Self.Product" />
@@ -93,10 +94,10 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="Keycode" EntitySet="Keycode" />
           </AssociationSet>
-          <EntitySet Name="Bestelling" EntityType="LunarModel.Bestelling" />
-          <AssociationSet Name="FK_Keycode_ToTable_2" Association="LunarModel.FK_Keycode_ToTable_2">
-            <End Role="Bestelling" EntitySet="Bestelling" />
-            <End Role="Keycode" EntitySet="Keycode" />
+          <EntitySet Name="Winkelwagen" EntityType="LunarModel.Winkelwagen" />
+          <AssociationSet Name="FK_Product_ToTable" Association="LunarModel.FK_Product_ToTable">
+            <End Role="Winkelwagen" EntitySet="Winkelwagen" />
+            <End Role="Product" EntitySet="Product" />
           </AssociationSet>
         </EntityContainer>
         <EnumType Name="Uitgever" a:ExternalTypeName="Uitgever" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -108,9 +109,7 @@
           <Property Name="KeycodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="KlantID" Type="Int32" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="BestellingID" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="LunarModel.FK_Keycode_ToTable_1" FromRole="Keycode" ToRole="Product" />
-          <NavigationProperty Name="Bestelling" Relationship="LunarModel.FK_Keycode_ToTable_2" FromRole="Keycode" ToRole="Bestelling" />
         </EntityType>
         <Association Name="FK_Keycode_ToTable_1">
           <End Type="LunarModel.Product" Role="Product" Multiplicity="1" />
@@ -124,24 +123,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Bestelling">
+        <EntityType Name="Winkelwagen">
           <Key>
-            <PropertyRef Name="BestellingID" />
+            <PropertyRef Name="WinkelwagenID" />
           </Key>
-          <Property Name="BestellingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdministratorID" Type="Int32" Nullable="false" />
+          <Property Name="WinkelwagenID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="KlantID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Keycode" Relationship="LunarModel.FK_Keycode_ToTable_2" FromRole="Bestelling" ToRole="Keycode" />
+          <NavigationProperty Name="Product" Relationship="LunarModel.FK_Product_ToTable" FromRole="Winkelwagen" ToRole="Product" />
         </EntityType>
-        <Association Name="FK_Keycode_ToTable_2">
-          <End Type="LunarModel.Bestelling" Role="Bestelling" Multiplicity="0..1" />
-          <End Type="LunarModel.Keycode" Role="Keycode" Multiplicity="*" />
+        <Association Name="FK_Product_ToTable">
+          <End Type="LunarModel.Winkelwagen" Role="Winkelwagen" Multiplicity="0..1" />
+          <End Type="LunarModel.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Bestelling">
-              <PropertyRef Name="BestellingID" />
+            <Principal Role="Winkelwagen">
+              <PropertyRef Name="WinkelwagenID" />
             </Principal>
-            <Dependent Role="Keycode">
-              <PropertyRef Name="BestellingID" />
+            <Dependent Role="Product">
+              <PropertyRef Name="WinkelwagenID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -154,6 +152,7 @@
           <EntitySetMapping Name="Product">
             <EntityTypeMapping TypeName="LunarModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="WinkelwagenID" ColumnName="WinkelwagenID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Naam" ColumnName="Naam" />
                 <ScalarProperty Name="Uitgever" ColumnName="Uitgever" />
@@ -166,19 +165,17 @@
           <EntitySetMapping Name="Keycode">
             <EntityTypeMapping TypeName="LunarModel.Keycode">
               <MappingFragment StoreEntitySet="Keycode">
-                <ScalarProperty Name="BestellingID" ColumnName="BestellingID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="KlantID" ColumnName="KlantID" />
                 <ScalarProperty Name="KeycodeID" ColumnName="KeycodeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Bestelling">
-            <EntityTypeMapping TypeName="LunarModel.Bestelling">
-              <MappingFragment StoreEntitySet="Bestelling">
+          <EntitySetMapping Name="Winkelwagen">
+            <EntityTypeMapping TypeName="LunarModel.Winkelwagen">
+              <MappingFragment StoreEntitySet="Winkelwagen">
                 <ScalarProperty Name="KlantID" ColumnName="KlantID" />
-                <ScalarProperty Name="AdministratorID" ColumnName="AdministratorID" />
-                <ScalarProperty Name="BestellingID" ColumnName="BestellingID" />
+                <ScalarProperty Name="WinkelwagenID" ColumnName="WinkelwagenID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

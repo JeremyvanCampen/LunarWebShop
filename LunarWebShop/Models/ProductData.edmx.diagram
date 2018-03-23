@@ -8,8 +8,8 @@
         <EntityTypeShape EntityType="LunarModel.Product" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LunarModel.Keycode" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="LunarModel.FK_Keycode_ToTable_1" />
-        <EntityTypeShape EntityType="LunarModel.Bestelling" Width="1.5" PointX="5.375" PointY="1.25" />
-        <AssociationConnector Association="LunarModel.FK_Keycode_ToTable_2" />
+        <EntityTypeShape EntityType="LunarModel.Winkelwagen" Width="1.5" PointX="0.75" PointY="4.125" />
+        <AssociationConnector Association="LunarModel.FK_Product_ToTable" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

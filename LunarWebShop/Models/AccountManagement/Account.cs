@@ -11,7 +11,7 @@ namespace LunarWebShop.Models.AccountManagement
 {
     public class Account
     {
-
+        int GebruikerID;
         private string ConnectionString =@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Jeremy van Campen\Dropbox\ICT\Semester 2\Individueel Lunar\LunarWebShop\LunarWebShop\App_Data\Lunar.mdf;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework";
             
         //intialise  
@@ -95,6 +95,7 @@ namespace LunarWebShop.Models.AccountManagement
             checkGebruikersnaam.Parameters.AddWithValue("@gebruikersnaam", klant.Gebruikersnaam);
             int GebruikerBestaatal = (int)checkGebruikersnaam.ExecuteScalar();
 
+
             if (EmailBestaatal > 0)
             {
                 //Gebruiker bestaat al kan niet worden toegevoegd
@@ -133,11 +134,33 @@ namespace LunarWebShop.Models.AccountManagement
                 cmd2.Parameters.AddWithValue("@straat", klant.Straat);
                 cmd2.Parameters.AddWithValue("@huisnummer", klant.Huisnummer);
                 cmd2.ExecuteNonQuery();
+
+                //GebruikerID ophalen voor winkelwagen creatie
+                SqlCommand cmd3 = new SqlCommand(@"SELECT GebruikerID FROM Gebruiker 
+                                        WHERE Gebruikersnaam=@uname and 
+                                        Wachtwoord=@pass", con);
+                cmd3.Parameters.AddWithValue("@uname", klant.Gebruikersnaam);
+                cmd3.Parameters.AddWithValue("@pass", klant.Wachtwoord);
+                using (SqlDataReader reader = cmd3.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                         GebruikerID = reader.GetInt32(0);
+                    }
+                }
+
+                //Winkelwagen aanmaken
+                string WinkelwagenQuery = "INSERT INTO Winkelwagen(KlantID) Values((SELECT KlantID FROM [Klant] WHERE GebruikerID = @gebruikerID))";
+                SqlCommand cmd5 = new SqlCommand(WinkelwagenQuery, con);
+                cmd5.Parameters.AddWithValue("@gebruikerID", GebruikerID);
+                cmd5.ExecuteNonQuery();
                 con.Close();
+
             }
             catch (Exception e)
             {
                 string error = e.ToString();
+                con.Close();
                 return error;
             }
             return "Succesvol";
@@ -262,7 +285,7 @@ namespace LunarWebShop.Models.AccountManagement
                 }
                 con.Close();
                 return Administrator;
-            }
+             }
             }
             catch (Exception e)
             {
