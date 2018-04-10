@@ -153,6 +153,7 @@
     <Compile Include="Controllers\GebruikerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductenController.cs" />
+    <Compile Include="Controllers\WinkelwagenManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -163,12 +164,10 @@
     <Compile Include="Models\Enums\Genre.cs" />
     <Compile Include="Models\Enums\Uitgever.cs" />
     <Compile Include="Models\Gebruiker.cs" />
-    <Compile Include="Models\ILibraryManagement.cs" />
     <Compile Include="Models\Keycode.cs">
       <DependentUpon>ProductData.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Klant.cs" />
-    <Compile Include="Models\Library.cs" />
     <Compile Include="Models\Product.cs">
       <DependentUpon>ProductData.tt</DependentUpon>
     </Compile>
@@ -188,7 +187,7 @@
       <DependentUpon>ProductData.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModelProductKeycode.cs" />
-    <Compile Include="Models\Webshop.cs" />
+    <Compile Include="Models\ViewModelProductKeycodeList.cs" />
     <Compile Include="Models\Winkelwagen.cs">
       <DependentUpon>ProductData.tt</DependentUpon>
     </Compile>
@@ -206,7 +205,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\Cod.jfif" />
     <Content Include="Images\shopping-cart-32.png" />
     <Content Include="Models\ProductData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -263,6 +261,8 @@
     <Content Include="Views\Producten\Edit.cshtml" />
     <Content Include="Views\Producten\Delete.cshtml" />
     <Content Include="Views\Producten\Details.cshtml" />
+    <Content Include="Views\WinkelwagenManagement\Myorder.cshtml" />
+    <Content Include="Views\Klant\SaldoUploaden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -280,7 +280,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

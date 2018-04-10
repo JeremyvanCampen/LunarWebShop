@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title Lunar</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -46,9 +46,11 @@
                                     @Html.ActionLink("Mijn Account", "MijnAccount", "Klant", null, new { @style = "color:White;" })
                                 </li>
                                 <li class="nav-item">
-                                    <a href="@Url.Action("Index", "Home")">
-                                        <img style="margin-top: -20%" src="/Images/shopping-cart-32.png"/>
-                                    </a>
+
+                                    @Html.ActionLink("Mijn winkelwagen", "Myorder", "WinkelwagenManagement", new { id = @klant.KlantID }, new { @style = "color:White;" })
+                                </li>
+                                <li class="nav-item">
+                                    @Html.ActionLink("Saldo uploaden", "SaldoUploaden", "Klant", new { id = @klant.KlantID, gebruikersnaam = @klant.Gebruikersnaam }, new { @style = "color:White;" })
                                 </li>
                                 <li class="nav-item">
                                     @Html.ActionLink("uitloggen", "Uitloggen", "Klant", null, new { @style = "color:White;" })

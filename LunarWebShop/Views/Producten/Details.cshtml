@@ -5,11 +5,7 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (Session["Administrator"] == null)
-{
-    Response.Redirect("../Home/Index");
-}
-else
+@if (Session["Administrator"] != null)
 {
     var Admin = Session["Administrator"] as Administrator;
 
@@ -20,7 +16,7 @@ else
 
             <div>
                 <h4>Product</h4>
-                <hr/>
+                <hr />
                 <dl class="dl-horizontal">
                     <dt>
                         @Html.DisplayNameFor(model => model.Product.Naam)
@@ -61,6 +57,14 @@ else
                     <dd>
                         @Html.DisplayFor(model => model.Product.Foto)
                     </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Product.AchtergrondFoto)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Product.AchtergrondFoto)
+                    </dd>
                     <dt>
                         @Html.DisplayNameFor(model => model.keycode.KeycodeID)
                     </dt>
@@ -71,10 +75,46 @@ else
                 </dl>
             </div>
             <p>
-                @Html.ActionLink("Edit", "Edit", new {id = Model.Product.ProductID}) |
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Product.ProductID }) |
                 @Html.ActionLink("Back to List", "Product")
             </p>
 
         </center>
     }
+}
+else
+{
+    <center style="padding: 4rem 2rem;">
+        <div style="max-width: 20%; display: inline-block; padding-right: 50px;">
+            <img style="width: 100%;" src="@Url.Content(@Model.Product.Foto)" alt="@Model.Product.Naam"/>
+        </div>
+        <div style="display: inline-block; max-width: 60%;">
+            <h1> @Html.DisplayFor(model => model.Product.Naam)</h1>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.Uitgever)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Uitgever)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.Genre)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Genre)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.Prijs)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Prijs)
+                </dd>
+            </dl>
+        </div>
+    </center>
 }

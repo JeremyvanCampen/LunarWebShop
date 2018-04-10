@@ -12,16 +12,15 @@ namespace LunarWebShop.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Bestelling
+    public partial class Winkelwagen
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Bestelling()
+        public Winkelwagen()
         {
             this.Keycode = new HashSet<Keycode>();
         }
     
-        public int BestellingID { get; set; }
-        public int AdministratorID { get; set; }
+        public int WinkelwagenID { get; set; }
         public int KlantID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

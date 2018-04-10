@@ -5,11 +5,12 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 
+
 namespace LunarWebShop.Models
 { 
     public abstract class Gebruiker
     {
-        public int GebruikerID;
+        public int GebruikerID { get; set; }
         [Display(Name = "Voornaam")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Voornaam moet ingevoerd worden!")]
         public string Voornaam { get; set; }
@@ -42,5 +43,7 @@ namespace LunarWebShop.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Geboortedatum { get; set; }
+
+      
     }
 }

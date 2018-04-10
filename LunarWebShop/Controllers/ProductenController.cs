@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,9 +28,9 @@ namespace LunarWebShop.Controllers
 
             return View(ViewModelProductKeycode);
         }
-
+          [HttpGet]
         // GET: Producten/Create
-        public ActionResult Create( HttpPostedFileBase image)
+        public ActionResult Create()
         {
             return View();
         }
@@ -41,12 +42,27 @@ namespace LunarWebShop.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                //foto toevoegen
+                string filename = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                string extention = Path.GetExtension(product.ImageFile.FileName);
+                filename = filename + DateTime.Now.ToString("yymmssfff") + extention;
+                product.Foto = "~/Images/" + filename;
+                filename = Path.Combine(Server.MapPath("~/Images/"), filename);
+                product.ImageFile.SaveAs(filename);
+
+                string filename2 = Path.GetFileNameWithoutExtension(product.ImageFile2.FileName);
+                string extention2 = Path.GetExtension(product.ImageFile2.FileName);
+                filename2 = filename2 + DateTime.Now.ToString("yymmssfff") + extention2;
+                product.AchtergrondFoto = "~/Images/" + filename2;
+                filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
+                product.ImageFile2.SaveAs(filename2);
+                //Keycode en product toevoegen aan database
                 Keycode keycode = new Keycode();
                 keycode.ProductID = product.ProductID;
                 _database.Product.Add(product);
                 _database.Keycode.Add(keycode);
                 _database.SaveChanges();
+
                 return RedirectToAction("Product");
             }
             catch(Exception ex)
@@ -78,6 +94,21 @@ namespace LunarWebShop.Controllers
 
             if (!ModelState.IsValid)
                 return View(OriginalProduct);
+
+            string filename = Path.GetFileNameWithoutExtension(ProductToEdit.ImageFile.FileName);
+            string extention = Path.GetExtension(ProductToEdit.ImageFile.FileName);
+            filename = filename + DateTime.Now.ToString("yymmssfff") + extention;
+            ProductToEdit.Foto = "~/Images/" + filename;
+            filename = Path.Combine(Server.MapPath("~/Images/"), filename);
+            ProductToEdit.ImageFile.SaveAs(filename);
+
+
+            string filename2 = Path.GetFileNameWithoutExtension(ProductToEdit.ImageFile2.FileName);
+            string extention2 = Path.GetExtension(ProductToEdit.ImageFile2.FileName);
+            filename2 = filename2 + DateTime.Now.ToString("yymmssfff") + extention2;
+            ProductToEdit.AchtergrondFoto = "~/Images/" + filename2;
+            filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
+            ProductToEdit.ImageFile2.SaveAs(filename2);
 
             _database.Entry(OriginalProduct).CurrentValues.SetValues(ProductToEdit);
             _database.SaveChanges();

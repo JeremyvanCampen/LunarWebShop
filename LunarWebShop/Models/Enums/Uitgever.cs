@@ -11,5 +11,6 @@
     Konami,
     TakeTwoInteractive,
     Capcom,
-    TelltaleGames
+    TelltaleGames,
+    Bluehole,
 }

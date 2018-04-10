@@ -1,0 +1,76 @@
+﻿@using LunarWebShop.Models
+@model LunarWebShop.Models.Klant
+
+@{
+    ViewBag.Title = "SaldoUploaden";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["Klant"] == null)
+{
+    Response.Redirect("../Home/Index");
+}
+else
+{
+    var klant = Session["Klant"] as Klant;
+
+    if (klant != null)
+    {
+
+        <center style="padding: 4rem 2rem;">
+            <h2>SaldoUploaden</h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.KlantID)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.GebruikerID)
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Saldo, htmlAttributes: new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Saldo, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Saldo, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Straat)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Huisnummer)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Voornaam)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Achternaam)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Gebruikersnaam)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Email)
+
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.Geboortedatum)
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default"/>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Home", "Index","Home")
+            </div>
+        </center>
+    }
+}

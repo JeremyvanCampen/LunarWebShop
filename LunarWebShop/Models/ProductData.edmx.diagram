@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="ef0e07de137646bda5fdef3b32649483" Name="Diagram1">
-        <EntityTypeShape EntityType="LunarModel.Product" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LunarModel.Keycode" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="LunarModel.Keycode" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="LunarModel.Product" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="LunarModel.Winkelwagen" Width="1.5" PointX="0.75" PointY="1.25" />
         <AssociationConnector Association="LunarModel.FK_Keycode_ToTable_1" />
-        <EntityTypeShape EntityType="LunarModel.Winkelwagen" Width="1.5" PointX="0.75" PointY="4.125" />
-        <AssociationConnector Association="LunarModel.FK_Product_ToTable" />
+        <AssociationConnector Association="LunarModel.FK_Keycode_ToTable_2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

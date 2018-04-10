@@ -11,7 +11,8 @@ namespace LunarWebShop.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web;
+
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,11 +26,13 @@ namespace LunarWebShop.Models
         public Uitgever Uitgever { get; set; }
         public Genre Genre { get; set; }
         public decimal Prijs { get; set; }
-        public byte[] Foto { get; set; }
-        public Nullable<int> WinkelwagenID { get; set; }
-    
+        public string Foto { get; set; }
+        public string AchtergrondFoto { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
+        public HttpPostedFileBase ImageFile2 { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Keycode> Keycode { get; set; }
-        public virtual Winkelwagen Winkelwagen { get; set; }
     }
 }

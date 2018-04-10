@@ -25,8 +25,10 @@ namespace LunarWebShop.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Keycode> Keycode { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Winkelwagen> Winkelwagen { get; set; }
+
+        public System.Data.Entity.DbSet<LunarWebShop.Models.Klant> Klants { get; set; }
     }
 }

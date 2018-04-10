@@ -11,4 +11,6 @@
     Simulation,
     Sports,
     Strategy,
+    Mmorpg,
+
 }
