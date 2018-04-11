@@ -164,33 +164,11 @@
     <Compile Include="Models\Enums\Genre.cs" />
     <Compile Include="Models\Enums\Uitgever.cs" />
     <Compile Include="Models\Gebruiker.cs" />
-    <Compile Include="Models\Keycode.cs">
-      <DependentUpon>ProductData.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Keycode.cs" />
     <Compile Include="Models\Klant.cs" />
-    <Compile Include="Models\Product.cs">
-      <DependentUpon>ProductData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProductData.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProductData.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProductData.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProductData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProductData.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProductData.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ViewModelProductKeycode.cs" />
     <Compile Include="Models\ViewModelProductKeycodeList.cs" />
-    <Compile Include="Models\Winkelwagen.cs">
-      <DependentUpon>ProductData.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -206,27 +184,10 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\shopping-cart-32.png" />
-    <Content Include="Models\ProductData.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ProductData.edmx</DependentUpon>
-      <LastGenOutput>ProductData.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ProductData.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ProductData.edmx</DependentUpon>
-      <LastGenOutput>ProductData.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="Models\ProductData.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ProductData.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ProductData.edmx.diagram">
-      <DependentUpon>ProductData.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

@@ -300,7 +300,7 @@ namespace LunarWebShop.Models.AccountManagement
             {
                 SqlCommand cmd6 =
                     new SqlCommand(
-                        @"SELECT ProductID,Naam,Uitgever,Genre,Prijs FROM Product WHERE ProductID = @productid ", con);
+                        @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product WHERE ProductID = @productid ", con);
                 cmd6.Parameters.AddWithValue("@productid", item);
 
                 using (SqlDataReader reader = cmd6.ExecuteReader())
@@ -313,7 +313,26 @@ namespace LunarWebShop.Models.AccountManagement
                         product.Uitgever = reader.GetFieldValue<Uitgever>(2);
                         product.Genre = reader.GetFieldValue<Genre>(3);
                         product.Prijs = reader.GetDecimal(4);
+                        product.Foto = reader.GetString(5);
+                        product.AchtergrondFoto = reader.GetString(6);
                         producten.Add(product);
+                    }
+                }
+            }
+
+            foreach (var item in producten)
+            {
+                SqlCommand cmd8 = new SqlCommand(
+                    @"SELECT KeycodeID FROM Keycode where ProductID = @productid", con);
+                cmd8.Parameters.AddWithValue("@productid", item.ProductID);
+
+                using (SqlDataReader reader = cmd8.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Keycode keycode = new Keycode();
+                        keycode.KeycodeID = reader.GetInt32(0);
+                        item.Keycode.Add(keycode);
                     }
                 }
             }
@@ -486,5 +505,178 @@ namespace LunarWebShop.Models.AccountManagement
             con.Close();
             return klant;
         }
+
+        public List<Product> AlleProducten()
+        {
+            List<Product> producten = new List<Product>();
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            SqlCommand cmd3 = new SqlCommand(
+                @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product", con);
+
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.ProductID = reader.GetInt32(0);
+                    product.Naam = reader.GetString(1);
+                    product.Uitgever = reader.GetFieldValue<Uitgever>(2);
+                    product.Genre = reader.GetFieldValue<Genre>(3);
+                    product.Prijs = reader.GetDecimal(4);
+                    product.Foto = reader.GetString(5);
+                    product.AchtergrondFoto = reader.GetString(6);
+                    producten.Add(product);
+
+                }
+            }
+
+            foreach (var item in producten)
+            {
+                SqlCommand cmd4 = new SqlCommand(
+                    @"SELECT KeycodeID FROM Keycode where ProductID = @productid", con);
+                cmd4.Parameters.AddWithValue("@productid", item.ProductID);
+
+                using (SqlDataReader reader = cmd4.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Keycode keycode = new Keycode();
+                        keycode.KeycodeID = reader.GetInt32(0);
+                        item.Keycode.Add(keycode);
+                    }
+                }
+            }
+            return producten;
+        }
+
+
+        public void DeleteProduct(int id)
+        {
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            SqlCommand cmd4 = new SqlCommand(
+                @"DELETE FROM [Keycode] WHERE ProductID = @productid", con);
+            cmd4.Parameters.AddWithValue("@productid", id);
+            cmd4.ExecuteNonQuery();
+
+            SqlCommand cmd3 = new SqlCommand(
+                @"DELETE FROM [Product] WHERE ProductID = @productid", con);
+            cmd3.Parameters.AddWithValue("@productid", id);
+            cmd3.ExecuteNonQuery();
+
+            con.Close();
+        }
+
+        public void CreateProduct(Product product)
+        {
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+            SqlCommand cmd6 =
+                new SqlCommand(
+                    @"INSERT INTO [Product] (Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto) VALUES (@naam, @uitgever, @genre, @prijs, @foto, @achtergrondFoto)", con);
+            cmd6.Parameters.AddWithValue("@naam", product.Naam);
+            cmd6.Parameters.AddWithValue("@uitgever", product.Uitgever);
+            cmd6.Parameters.AddWithValue("@genre", product.Genre);
+            cmd6.Parameters.AddWithValue("@prijs", product.Prijs);
+            cmd6.Parameters.AddWithValue("@foto", product.Foto);
+            cmd6.Parameters.AddWithValue("@achtergrondfoto", product.AchtergrondFoto);
+            cmd6.ExecuteNonQuery();
+
+            SqlCommand cmd4 = new SqlCommand(
+                @"SELECT ProductID FROM [Product] WHERE Naam = @naam AND Uitgever = @uitgever AND Genre = @genre AND Prijs = @prijs AND Foto = @foto AND AchtergrondFoto = @achtergrondfoto", con);
+            cmd4.Parameters.AddWithValue("@naam", product.Naam);
+            cmd4.Parameters.AddWithValue("@uitgever", product.Uitgever);
+            cmd4.Parameters.AddWithValue("@genre", product.Genre);
+            cmd4.Parameters.AddWithValue("@prijs", product.Prijs);
+            cmd4.Parameters.AddWithValue("@foto", product.Foto);
+            cmd4.Parameters.AddWithValue("@achtergrondfoto", product.AchtergrondFoto);
+
+            using (SqlDataReader reader = cmd4.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    product.ProductID = reader.GetInt32(0);
+
+                }
+            }
+
+            SqlCommand cmd3 = new SqlCommand(
+                @"INSERT INTO [Keycode] (ProductID) VALUES (@productid)", con);
+            cmd3.Parameters.AddWithValue("@productid", product.ProductID);
+            cmd3.ExecuteNonQuery();
+
+            con.Close();
+        }
+
+        public void ProductAanpassen(Product product)
+        {
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+            SqlCommand cmd6 =
+                new SqlCommand(
+                    @"UPDATE [Product] SET Naam = @naam, Uitgever = @uitgever, Genre = @genre, Prijs = @prijs, Foto = @foto, AchtergrondFoto = @achtergrondfoto WHERE ProductID = @productid", con);
+            cmd6.Parameters.AddWithValue("@naam", product.Naam);
+            cmd6.Parameters.AddWithValue("@uitgever", product.Uitgever);
+            cmd6.Parameters.AddWithValue("@genre", product.Genre);
+            cmd6.Parameters.AddWithValue("@prijs", product.Prijs);
+            cmd6.Parameters.AddWithValue("@foto", product.Foto);
+            cmd6.Parameters.AddWithValue("@achtergrondfoto", product.AchtergrondFoto);
+            cmd6.Parameters.AddWithValue("@productid", product.ProductID);
+            cmd6.ExecuteNonQuery();
+            con.Close();
+        }
+
+        public object ProductOphalen(int id)
+        {
+            Product product = new Product();
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            SqlCommand cmd3 = new SqlCommand(
+                @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product WHERE ProductID = @productid", con);
+            cmd3.Parameters.AddWithValue("@productid", id);
+
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    product.ProductID = reader.GetInt32(0);
+                    product.Naam = reader.GetString(1);
+                    product.Uitgever = reader.GetFieldValue<Uitgever>(2);
+                    product.Genre = reader.GetFieldValue<Genre>(3);
+                    product.Prijs = reader.GetDecimal(4);
+                    product.Foto = reader.GetString(5);
+                    product.AchtergrondFoto = reader.GetString(6);
+
+                }
+            }
+            return product;
+        }
+        public object KeycodeOphalen(int productid)
+        {
+            Keycode keycode = new Keycode();
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            SqlCommand cmd3 = new SqlCommand(
+                @"SELECT KeycodeID, ProductID FROM Keycode WHERE ProductID = @productid", con);
+            cmd3.Parameters.AddWithValue("@productid", productid);
+
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    keycode.KeycodeID = reader.GetInt32(0);
+                    keycode.ProductID = reader.GetInt32(1);
+                }
+            }
+
+            return keycode;
+        }
+
+
     }
 }

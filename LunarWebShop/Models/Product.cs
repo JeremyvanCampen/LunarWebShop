@@ -20,7 +20,7 @@ namespace LunarWebShop.Models
         {
             this.Keycode = new HashSet<Keycode>();
         }
-    
+
         public int ProductID { get; set; }
         public string Naam { get; set; }
         public Uitgever Uitgever { get; set; }

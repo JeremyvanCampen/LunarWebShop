@@ -13,7 +13,6 @@ namespace LunarWebShop.Controllers
 {
     public class KlantController : Controller
     {
-        LunarProduct _database = new LunarProduct();
 
         //Registratie pagina
         [HttpGet]

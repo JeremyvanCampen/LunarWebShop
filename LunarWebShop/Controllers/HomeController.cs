@@ -4,15 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LunarWebShop.Models;
+using LunarWebShop.Models.AccountManagement;
 
 namespace LunarWebShop.Controllers
 {
     public class HomeController : Controller
     {
-        LunarProduct _database = new LunarProduct();
+        Account account = new Account();
         public ActionResult Index()
         {
-            return View(_database.Product.ToList());
+            return View(account.AlleProducten());
         }
 
         public ActionResult About()

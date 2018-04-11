@@ -11,7 +11,6 @@ namespace LunarWebShop.Controllers
 {
     public class WinkelwagenManagementController : Controller
     {
-        LunarProduct _database = new LunarProduct();
         Account account = new Account();
 
         public ActionResult Add(int KlantID, int KeycodeID)
@@ -23,13 +22,10 @@ namespace LunarWebShop.Controllers
         public ActionResult Myorder(int id)
         {
             List<Product> producten = account.WinkelwagenProducten(id);
-            List<Product> productenmetkeycode = new List<Product>();
             ViewModelProductKeycodeList VMPK = new ViewModelProductKeycodeList();
             foreach (var item in producten)
             {
-                List<Product> Product =
-                    _database.Product.Where(product => product.ProductID == item.ProductID).ToList();
-               VMPK.Product.Add(Product[0]);
+               VMPK.Product.Add(item);
                VMPK.TotaalBedrag = VMPK.TotaalBedrag + item.Prijs;
             }
 
