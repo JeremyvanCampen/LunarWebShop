@@ -21,14 +21,26 @@ namespace LunarWebShop.Controllers
 
         public ActionResult Myorder(int id)
         {
+            bool status = false;
+            string message = "";
+
             List<Product> producten = account.WinkelwagenProducten(id);
             ViewModelProductKeycodeList VMPK = new ViewModelProductKeycodeList();
             foreach (var item in producten)
             {
-               VMPK.Product.Add(item);
-               VMPK.TotaalBedrag = VMPK.TotaalBedrag + item.Prijs;
+                VMPK.Product.Add(item);
+                VMPK.TotaalBedrag = VMPK.TotaalBedrag + item.Prijs;
             }
 
+            if (TempData["Message"] != null)
+            {
+                if (TempData["Message"].ToString().Contains("Onvoldoende Saldo"))
+                {
+                    ViewBag.Message = TempData["Message"];
+                    ViewBag.Status = false;
+                    return View(VMPK);
+                }
+            }
             return View(VMPK);
         }
         public ActionResult Remove(int KeycodeID, int id)
@@ -36,5 +48,9 @@ namespace LunarWebShop.Controllers
             account.VerwijderUitWinkelwagen(KeycodeID);
             return RedirectToAction("Myorder", new{id = id});
         }
+
+      
     }
+
+
 }

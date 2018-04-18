@@ -13,6 +13,7 @@ namespace LunarWebShop.Controllers
 {
     public class KlantController : Controller
     {
+        private Account account = new Account();
 
         //Registratie pagina
         [HttpGet]
@@ -27,7 +28,6 @@ namespace LunarWebShop.Controllers
         {
             string message = "";
 
-            Account account = new Account();
             message = account.KlantToevoegen(user);
 
             if (message == "Succesvol")
@@ -59,8 +59,6 @@ namespace LunarWebShop.Controllers
         public ActionResult Login(Inloggen login)
         {
             string message = "";
-
-            Account account = new Account();
             var gebruiker = account.Inloggen(login.Gebruikersnaam, login.Wachtwoord);
 
             if (gebruiker is Klant)
@@ -101,17 +99,37 @@ namespace LunarWebShop.Controllers
         [HttpGet]
         public ActionResult SaldoUploaden(int id, string gebruikersnaam)
         {
-            Account account = new Account();
             return View(account.KlantgegevensZonderSaldo(id, gebruikersnaam));
         }
         [HttpPost]
         public ActionResult SaldoUploaden([Bind()] Klant user)
         {
-            Account account = new Account();
             account.SaldoToevoegen(user.Saldo, user.KlantID);
             var gebruiker = account.KlantgegevensVolledig(user.KlantID, user.Gebruikersnaam);
             Session["Klant"] = gebruiker;
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ProductVerkopen(int productid, int id, string gebruikersnaam)
+        {
+            string message = "";
+            message = account.ProductVerkopen(id, productid);
+
+            if (message == "Onvoldoende Saldo")
+            {
+                TempData["Message"] = message;
+                return RedirectToAction("Myorder", "WinkelwagenManagement", new { id = id });
+            }
+
+            var gebruiker = account.KlantgegevensVolledig(id, gebruikersnaam);
+            Session["Klant"] = gebruiker;
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult GameBibliotheek(int id)
+        {
+
+            return View(account.AlleProductenvanGebruiker(id));
         }
     }
 }

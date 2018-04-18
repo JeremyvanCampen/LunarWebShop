@@ -677,6 +677,115 @@ namespace LunarWebShop.Models.AccountManagement
             return keycode;
         }
 
+        public string ProductVerkopen(int KlantID,int ProductID)
+        {
+            int keycodeID = 0;
+            int WinkelwagenID = 0;
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            SqlCommand cmd5 = new SqlCommand(@"SELECT WinkelwagenID FROM Winkelwagen 
+                                        WHERE KlantID = @klantid", con);
+            cmd5.Parameters.AddWithValue("@klantid", KlantID);
+            using (SqlDataReader reader = cmd5.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    WinkelwagenID = reader.GetInt32(0);
+                }
+            }
+
+            SqlCommand cmd3 = new SqlCommand(@"SELECT KeycodeID FROM Keycode 
+                                        WHERE ProductID = @productid AND WinkelwagenID = @winkelwagenid", con);
+            cmd3.Parameters.AddWithValue("@productid", ProductID);
+            cmd3.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    keycodeID = reader.GetInt32(0);
+                }
+            }
+
+            try
+            {
+                SqlCommand cmd4 = new SqlCommand(@"UPDATE[Keycode] SET KlantID = @klantid WHERE KeycodeID = @keycodeid", con);
+                cmd4.Parameters.AddWithValue("@keycodeid", keycodeID);
+                cmd4.Parameters.AddWithValue("@klantid", KlantID);
+                cmd4.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                con.Close();
+                if (e.ToString().Contains("Niet genoeg Saldo"))
+                {
+                    return "Onvoldoende Saldo";
+                }
+                return e.ToString();
+            }
+            con.Close();
+            return String.Empty;
+        }
+        public List<Product> AlleProductenvanGebruiker(int id)
+        {
+            List<Keycode> keycodes = new List<Keycode>();
+            List<Product> producten = new List<Product>();
+
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            SqlCommand cmd4 = new SqlCommand(
+                @"SELECT KeycodeID FROM Keycode where klantID = @klantid", con);
+            cmd4.Parameters.AddWithValue("@klantid", id);
+
+            using (SqlDataReader reader = cmd4.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Keycode keycode = new Keycode();
+                    keycode.KeycodeID = reader.GetInt32(0);
+                    keycodes.Add(keycode);
+                }
+            }
+            foreach (var item in keycodes)
+            {
+                Product product = new Product();
+                SqlCommand cmd3 = new SqlCommand(
+                    @"SELECT ProductID FROM Keycode WHERE KeycodeID = @keycodeid", con);
+                cmd3.Parameters.AddWithValue("@keycodeid", item.KeycodeID);
+
+                using (SqlDataReader reader = cmd3.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        
+                        product.ProductID = reader.GetInt32(0);
+                    }
+                }
+
+                SqlCommand cmd1 = new SqlCommand(
+                    @"SELECT Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product Where ProductID = @productid", con);
+                cmd1.Parameters.AddWithValue("productid", product.ProductID);
+
+                using (SqlDataReader reader2 = cmd1.ExecuteReader())
+                {
+                    while (reader2.Read())
+                    {
+                        product.Naam = reader2.GetString(0);
+                        product.Uitgever = reader2.GetFieldValue<Uitgever>(1);
+                        product.Genre = reader2.GetFieldValue<Genre>(2);
+                        product.Prijs = reader2.GetDecimal(3);
+                        product.Foto = reader2.GetString(4);
+                        product.AchtergrondFoto = reader2.GetString(5);
+                    }
+                }
+                product.Keycode.Add(item);
+                producten.Add(product);
+
+            }
+            return producten;
+        }
+
 
     }
 }
