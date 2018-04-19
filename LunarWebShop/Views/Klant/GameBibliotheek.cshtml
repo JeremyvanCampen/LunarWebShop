@@ -1,6 +1,6 @@
 ﻿@using System.Activities.Expressions
-@using LunarWebShop.Models
-@model IEnumerable<LunarWebShop.Models.Product>
+@using Models
+@model IEnumerable<Models.Product>
 @if (Session["Klant"] != null)
 {
     var klant = Session["Klant"] as Klant;

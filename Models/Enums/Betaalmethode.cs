@@ -1,4 +1,5 @@
-﻿public enum BetaalMethode
+﻿
+    public enum BetaalMethode
 {
     IDeal,
     Paypal,

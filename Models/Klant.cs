@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace LunarWebShop.Models
+namespace Models
 {
-    public class Klant:Gebruiker
+    public class Klant : Gebruiker
 
     {
         public int KlantID { get; set; }

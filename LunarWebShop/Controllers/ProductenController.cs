@@ -4,25 +4,25 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using LunarWebShop.Models;
-using LunarWebShop.Models.AccountManagement;
+using Logic;
+using Models;
 
 namespace LunarWebShop.Controllers
 {
     public class ProductenController : Controller
     {
-        Account account = new Account();
+        private ProductLogic ProductLogic = new ProductLogic();
         // GET: Producten
         public ActionResult Product()
         {
-            return View(account.AlleProducten());
+            return View(ProductLogic.AlleProducten());
         }
 
         // GET: Producten/Details/5
         public ActionResult Details(int id)
         {
-            var product = account.ProductOphalen(id);
-            var keycode = account.KeycodeOphalen(id);
+            var product = ProductLogic.ProductOphalen(id);
+            var keycode = ProductLogic.KeycodeOphalen(id);
             ViewModelProductKeycode ViewModelProductKeycode = new ViewModelProductKeycode();
             ViewModelProductKeycode.keycode = keycode as Keycode;
             ViewModelProductKeycode.Product = product as Product;
@@ -58,7 +58,7 @@ namespace LunarWebShop.Controllers
                 filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
                 product.ImageFile2.SaveAs(filename2);
                 //Keycode en product toevoegen aan database
-                account.CreateProduct(product);
+                ProductLogic.CreateProduct(product);
 
                 return RedirectToAction("Product");
             }
@@ -72,7 +72,7 @@ namespace LunarWebShop.Controllers
         // GET: Producten/Edit/5
         public ActionResult Edit(int id)
         {
-            var ProductToEdit = account.ProductOphalen(id);
+            var ProductToEdit = ProductLogic.ProductOphalen(id);
             return View(ProductToEdit);
         }
 
@@ -81,7 +81,7 @@ namespace LunarWebShop.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(Product ProductToEdit)
         {
-            var OriginalProduct = account.ProductOphalen(ProductToEdit.ProductID);
+            var OriginalProduct = ProductLogic.ProductOphalen(ProductToEdit.ProductID);
 
             if (!ModelState.IsValid)
                 return View(OriginalProduct);
@@ -101,7 +101,7 @@ namespace LunarWebShop.Controllers
             filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
             ProductToEdit.ImageFile2.SaveAs(filename2);
 
-            account.ProductAanpassen(ProductToEdit);
+            ProductLogic.ProductAanpassen(ProductToEdit);
 
             return RedirectToAction("Product");
         }
@@ -109,7 +109,7 @@ namespace LunarWebShop.Controllers
         // GET: Producten/Delete/5
         public ActionResult Delete(int? id)
         {
-            return View(account.ProductOphalen(Convert.ToInt32(id)));
+            return View(ProductLogic.ProductOphalen(Convert.ToInt32(id)));
         }
 
         // POST: Producten/Delete/5
@@ -117,7 +117,7 @@ namespace LunarWebShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            account.DeleteProduct(id);
+            ProductLogic.DeleteProduct(id);
             return RedirectToAction("Product");
         }
     }

@@ -157,18 +157,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountManagement\Account.cs" />
-    <Compile Include="Models\AccountManagement\Inloggen.cs" />
-    <Compile Include="Models\Administrator.cs" />
-    <Compile Include="Models\Enums\BetaalMethode.cs" />
-    <Compile Include="Models\Enums\Genre.cs" />
-    <Compile Include="Models\Enums\Uitgever.cs" />
-    <Compile Include="Models\Gebruiker.cs" />
-    <Compile Include="Models\Keycode.cs" />
-    <Compile Include="Models\Klant.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ViewModelProductKeycode.cs" />
-    <Compile Include="Models\ViewModelProductKeycodeList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +229,19 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logic\Logic.csproj">
+      <Project>{5bcca858-3184-47cc-86df-f584feb8b31b}</Project>
+      <Name>Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{144f167f-37a9-4ff1-b859-252c6791c46a}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

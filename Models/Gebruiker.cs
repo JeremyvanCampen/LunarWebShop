@@ -6,8 +6,8 @@ using System.Runtime.Remoting.Messaging;
 using System.Web;
 
 
-namespace LunarWebShop.Models
-{ 
+namespace Models
+{
     public abstract class Gebruiker
     {
         public int GebruikerID { get; set; }
@@ -44,6 +44,6 @@ namespace LunarWebShop.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Geboortedatum { get; set; }
 
-      
+
     }
 }

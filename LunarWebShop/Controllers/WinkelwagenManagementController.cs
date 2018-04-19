@@ -4,27 +4,25 @@ using System.Linq;
 using System.Web;
 using System.Web.DynamicData;
 using System.Web.Mvc;
-using LunarWebShop.Models;
-using LunarWebShop.Models.AccountManagement;
+using Logic;
+using Models;
 
 namespace LunarWebShop.Controllers
 {
     public class WinkelwagenManagementController : Controller
     {
-        Account account = new Account();
+        private GebruikerLogic GebruikerLogic = new GebruikerLogic();
 
         public ActionResult Add(int KlantID, int KeycodeID)
         {
-            account.VoegToeAanWinkelwagen(KlantID, KeycodeID);
+            GebruikerLogic.VoegToeAanWinkelwagen(KlantID, KeycodeID);
             return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Myorder(int id)
         {
-            bool status = false;
-            string message = "";
 
-            List<Product> producten = account.WinkelwagenProducten(id);
+            List<Product> producten = GebruikerLogic.WinkelwagenProducten(id);
             ViewModelProductKeycodeList VMPK = new ViewModelProductKeycodeList();
             foreach (var item in producten)
             {
@@ -45,7 +43,7 @@ namespace LunarWebShop.Controllers
         }
         public ActionResult Remove(int KeycodeID, int id)
         {
-            account.VerwijderUitWinkelwagen(KeycodeID);
+            GebruikerLogic.VerwijderUitWinkelwagen(KeycodeID);
             return RedirectToAction("Myorder", new{id = id});
         }
 

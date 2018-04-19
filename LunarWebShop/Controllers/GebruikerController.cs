@@ -5,15 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.UI.WebControls.Expressions;
-using LunarWebShop.Models;
-using LunarWebShop.Models.AccountManagement;
+using Logic;
+using Models;
 using Microsoft.Ajax.Utilities;
 
 namespace LunarWebShop.Controllers
 {
     public class KlantController : Controller
     {
-        private Account account = new Account();
+        private GebruikerLogic GebruikerLogic = new GebruikerLogic();
+        private ProductLogic ProductLogic = new ProductLogic();
 
         //Registratie pagina
         [HttpGet]
@@ -28,7 +29,7 @@ namespace LunarWebShop.Controllers
         {
             string message = "";
 
-            message = account.KlantToevoegen(user);
+            message = GebruikerLogic.KlantToevoegen(user);
 
             if (message == "Succesvol")
             {
@@ -59,7 +60,7 @@ namespace LunarWebShop.Controllers
         public ActionResult Login(Inloggen login)
         {
             string message = "";
-            var gebruiker = account.Inloggen(login.Gebruikersnaam, login.Wachtwoord);
+            var gebruiker = GebruikerLogic.Inloggen(login.Gebruikersnaam, login.Wachtwoord);
 
             if (gebruiker is Klant)
             {
@@ -99,13 +100,13 @@ namespace LunarWebShop.Controllers
         [HttpGet]
         public ActionResult SaldoUploaden(int id, string gebruikersnaam)
         {
-            return View(account.KlantgegevensZonderSaldo(id, gebruikersnaam));
+            return View(GebruikerLogic.KlantgegevensZonderSaldo(id, gebruikersnaam));
         }
         [HttpPost]
         public ActionResult SaldoUploaden([Bind()] Klant user)
         {
-            account.SaldoToevoegen(user.Saldo, user.KlantID);
-            var gebruiker = account.KlantgegevensVolledig(user.KlantID, user.Gebruikersnaam);
+            GebruikerLogic.SaldoToevoegen(user.Saldo, user.KlantID);
+            var gebruiker = GebruikerLogic.KlantgegevensVolledig(user.KlantID, user.Gebruikersnaam);
             Session["Klant"] = gebruiker;
             return RedirectToAction("Index", "Home");
         }
@@ -113,7 +114,7 @@ namespace LunarWebShop.Controllers
         public ActionResult ProductVerkopen(int productid, int id, string gebruikersnaam)
         {
             string message = "";
-            message = account.ProductVerkopen(id, productid);
+            message = ProductLogic.ProductVerkopen(id, productid);
 
             if (message == "Onvoldoende Saldo")
             {
@@ -121,15 +122,14 @@ namespace LunarWebShop.Controllers
                 return RedirectToAction("Myorder", "WinkelwagenManagement", new { id = id });
             }
 
-            var gebruiker = account.KlantgegevensVolledig(id, gebruikersnaam);
+            var gebruiker = GebruikerLogic.KlantgegevensVolledig(id, gebruikersnaam);
             Session["Klant"] = gebruiker;
             return RedirectToAction("Index", "Home");
         }
 
         public ActionResult GameBibliotheek(int id)
         {
-
-            return View(account.AlleProductenvanGebruiker(id));
+            return View(ProductLogic.AlleProductenvanGebruiker(id));
         }
     }
 }
