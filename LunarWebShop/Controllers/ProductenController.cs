@@ -4,27 +4,28 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using LunarWebShop.Models;
+using Logic;
+using Models;
 
 namespace LunarWebShop.Controllers
 {
     public class ProductenController : Controller
     {
-       LunarProduct _database = new LunarProduct();
+        private ProductLogic ProductLogic = new ProductLogic();
         // GET: Producten
         public ActionResult Product()
         {
-            return View(_database.Product.ToList());
+            return View(ProductLogic.AlleProducten());
         }
 
         // GET: Producten/Details/5
         public ActionResult Details(int id)
         {
-            Product Product = _database.Product.Find(id);
-            Keycode keycode = _database.Keycode.Find(id);
+            var product = ProductLogic.ProductOphalen(id);
+            var keycode = ProductLogic.KeycodeOphalen(id);
             ViewModelProductKeycode ViewModelProductKeycode = new ViewModelProductKeycode();
-            ViewModelProductKeycode.keycode = keycode;
-            ViewModelProductKeycode.Product = Product;
+            ViewModelProductKeycode.keycode = keycode as Keycode;
+            ViewModelProductKeycode.Product = product as Product;
 
             return View(ViewModelProductKeycode);
         }
@@ -57,11 +58,7 @@ namespace LunarWebShop.Controllers
                 filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
                 product.ImageFile2.SaveAs(filename2);
                 //Keycode en product toevoegen aan database
-                Keycode keycode = new Keycode();
-                keycode.ProductID = product.ProductID;
-                _database.Product.Add(product);
-                _database.Keycode.Add(keycode);
-                _database.SaveChanges();
+                ProductLogic.CreateProduct(product);
 
                 return RedirectToAction("Product");
             }
@@ -75,11 +72,7 @@ namespace LunarWebShop.Controllers
         // GET: Producten/Edit/5
         public ActionResult Edit(int id)
         {
-            var ProductToEdit = (from m in _database.Product
-
-                where m.ProductID == id
-
-                select m).First();
+            var ProductToEdit = ProductLogic.ProductOphalen(id);
             return View(ProductToEdit);
         }
 
@@ -88,9 +81,7 @@ namespace LunarWebShop.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Edit(Product ProductToEdit)
         {
-            var OriginalProduct = (from m in _database.Product
-                where m.ProductID == ProductToEdit.ProductID
-                select m).First();
+            var OriginalProduct = ProductLogic.ProductOphalen(ProductToEdit.ProductID);
 
             if (!ModelState.IsValid)
                 return View(OriginalProduct);
@@ -110,8 +101,7 @@ namespace LunarWebShop.Controllers
             filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
             ProductToEdit.ImageFile2.SaveAs(filename2);
 
-            _database.Entry(OriginalProduct).CurrentValues.SetValues(ProductToEdit);
-            _database.SaveChanges();
+            ProductLogic.ProductAanpassen(ProductToEdit);
 
             return RedirectToAction("Product");
         }
@@ -119,8 +109,7 @@ namespace LunarWebShop.Controllers
         // GET: Producten/Delete/5
         public ActionResult Delete(int? id)
         {
-            Product Product = _database.Product.Find(id);
-            return View(Product);
+            return View(ProductLogic.ProductOphalen(Convert.ToInt32(id)));
         }
 
         // POST: Producten/Delete/5
@@ -128,10 +117,7 @@ namespace LunarWebShop.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            Product product = _database.Product.Find(id);
-            _database.Keycode.RemoveRange(_database.Keycode.Where(x => x.ProductID == id));
-            _database.Product.Remove(product);
-            _database.SaveChanges();
+            ProductLogic.DeleteProduct(id);
             return RedirectToAction("Product");
         }
     }

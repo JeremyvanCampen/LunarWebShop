@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using LunarWebShop.Models;
+using Logic;
+using Models;
 
 namespace LunarWebShop.Controllers
 {
     public class HomeController : Controller
     {
-        LunarProduct _database = new LunarProduct();
+       
+        private ProductLogic ProductLogic = new ProductLogic();
         public ActionResult Index()
         {
-            return View(_database.Product.ToList());
+            return View(ProductLogic.AlleProducten());
         }
 
         public ActionResult About()

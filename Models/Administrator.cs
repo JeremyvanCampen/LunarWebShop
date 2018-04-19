@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic
+namespace Models
 {
-    interface IProduct
+    public class Administrator : Gebruiker
     {
+
+
     }
 }

@@ -1,27 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Web;
-using LunarWebShop.Models;
+using System.Text;
+using System.Threading.Tasks;
+using Models;
 
-namespace LunarWebShop.Models.AccountManagement
+namespace DAL
 {
-    public class Account
+    public class GebruikerEngine
     {
         private int GebruikerID;
         private int WinkelwagenID;
 
         private string ConnectionString =
             "Data Source = (LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Lunar.mdf;Integrated Security = True";
-
-        //intialise  
-        public Account()
-        {
-
-        }
 
         public string KlantToevoegen(Klant klant)
         {
@@ -31,13 +24,13 @@ namespace LunarWebShop.Models.AccountManagement
             //EmailCheck
             SqlCommand checkemail = new SqlCommand("SELECT COUNT(*) FROM [Gebruiker] WHERE ([Email] = @email)", con);
             checkemail.Parameters.AddWithValue("@email", klant.Email);
-            int EmailBestaatal = (int) checkemail.ExecuteScalar();
+            int EmailBestaatal = (int)checkemail.ExecuteScalar();
 
             //GebruikersnaamCheck
             SqlCommand checkGebruikersnaam =
                 new SqlCommand("SELECT COUNT(*) FROM [Gebruiker] WHERE ([Gebruikersnaam] = @gebruikersnaam)", con);
             checkGebruikersnaam.Parameters.AddWithValue("@gebruikersnaam", klant.Gebruikersnaam);
-            int GebruikerBestaatal = (int) checkGebruikersnaam.ExecuteScalar();
+            int GebruikerBestaatal = (int)checkGebruikersnaam.ExecuteScalar();
 
 
             if (EmailBestaatal > 0)
@@ -132,7 +125,7 @@ namespace LunarWebShop.Models.AccountManagement
                                         Wachtwoord=@pass", con);
                 cmd.Parameters.AddWithValue("@uname", gebruikersnaam);
                 cmd.Parameters.AddWithValue("@pass", wachtwoord);
-                resultGebruiker = (int) cmd.ExecuteScalar();
+                resultGebruiker = (int)cmd.ExecuteScalar();
                 con.Close();
             }
             catch (Exception e)
@@ -150,7 +143,7 @@ namespace LunarWebShop.Models.AccountManagement
                 SqlCommand cmd1 = new SqlCommand(@"SELECT Count(*) FROM Klant 
                                         WHERE GebruikerID=@gebruikerid", con);
                 cmd1.Parameters.AddWithValue("@gebruikerid", resultGebruiker);
-                resultKlant = (int) cmd1.ExecuteScalar();
+                resultKlant = (int)cmd1.ExecuteScalar();
                 con.Close();
 
                 //AdminCheck
@@ -159,7 +152,7 @@ namespace LunarWebShop.Models.AccountManagement
                 SqlCommand cmd2 = new SqlCommand(@"SELECT Count(*) FROM Administrator 
                                         WHERE GebruikerID=@gebruikerid", con);
                 cmd2.Parameters.AddWithValue("@gebruikerid", resultGebruiker);
-                resultAdmin = (int) cmd2.ExecuteScalar();
+                resultAdmin = (int)cmd2.ExecuteScalar();
                 con.Close();
 
 
@@ -300,7 +293,7 @@ namespace LunarWebShop.Models.AccountManagement
             {
                 SqlCommand cmd6 =
                     new SqlCommand(
-                        @"SELECT ProductID,Naam,Uitgever,Genre,Prijs FROM Product WHERE ProductID = @productid ", con);
+                        @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product WHERE ProductID = @productid ", con);
                 cmd6.Parameters.AddWithValue("@productid", item);
 
                 using (SqlDataReader reader = cmd6.ExecuteReader())
@@ -313,7 +306,26 @@ namespace LunarWebShop.Models.AccountManagement
                         product.Uitgever = reader.GetFieldValue<Uitgever>(2);
                         product.Genre = reader.GetFieldValue<Genre>(3);
                         product.Prijs = reader.GetDecimal(4);
+                        product.Foto = reader.GetString(5);
+                        product.AchtergrondFoto = reader.GetString(6);
                         producten.Add(product);
+                    }
+                }
+            }
+
+            foreach (var item in producten)
+            {
+                SqlCommand cmd8 = new SqlCommand(
+                    @"SELECT KeycodeID FROM Keycode where ProductID = @productid", con);
+                cmd8.Parameters.AddWithValue("@productid", item.ProductID);
+
+                using (SqlDataReader reader = cmd8.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Keycode keycode = new Keycode();
+                        keycode.KeycodeID = reader.GetInt32(0);
+                        item.Keycode.Add(keycode);
                     }
                 }
             }
@@ -486,5 +498,6 @@ namespace LunarWebShop.Models.AccountManagement
             con.Close();
             return klant;
         }
+
     }
 }

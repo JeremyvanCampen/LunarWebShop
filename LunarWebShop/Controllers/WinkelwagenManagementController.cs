@@ -4,41 +4,51 @@ using System.Linq;
 using System.Web;
 using System.Web.DynamicData;
 using System.Web.Mvc;
-using LunarWebShop.Models;
-using LunarWebShop.Models.AccountManagement;
+using Logic;
+using Models;
 
 namespace LunarWebShop.Controllers
 {
     public class WinkelwagenManagementController : Controller
     {
-        LunarProduct _database = new LunarProduct();
-        Account account = new Account();
+        private GebruikerLogic GebruikerLogic = new GebruikerLogic();
 
         public ActionResult Add(int KlantID, int KeycodeID)
         {
-            account.VoegToeAanWinkelwagen(KlantID, KeycodeID);
+            GebruikerLogic.VoegToeAanWinkelwagen(KlantID, KeycodeID);
             return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Myorder(int id)
         {
-            List<Product> producten = account.WinkelwagenProducten(id);
-            List<Product> productenmetkeycode = new List<Product>();
+
+            List<Product> producten = GebruikerLogic.WinkelwagenProducten(id);
             ViewModelProductKeycodeList VMPK = new ViewModelProductKeycodeList();
             foreach (var item in producten)
             {
-                List<Product> Product =
-                    _database.Product.Where(product => product.ProductID == item.ProductID).ToList();
-               VMPK.Product.Add(Product[0]);
-               VMPK.TotaalBedrag = VMPK.TotaalBedrag + item.Prijs;
+                VMPK.Product.Add(item);
+                VMPK.TotaalBedrag = VMPK.TotaalBedrag + item.Prijs;
             }
 
+            if (TempData["Message"] != null)
+            {
+                if (TempData["Message"].ToString().Contains("Onvoldoende Saldo"))
+                {
+                    ViewBag.Message = TempData["Message"];
+                    ViewBag.Status = false;
+                    return View(VMPK);
+                }
+            }
             return View(VMPK);
         }
         public ActionResult Remove(int KeycodeID, int id)
         {
-            account.VerwijderUitWinkelwagen(KeycodeID);
+            GebruikerLogic.VerwijderUitWinkelwagen(KeycodeID);
             return RedirectToAction("Myorder", new{id = id});
         }
+
+      
     }
+
+
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5BCCA858-3184-47CC-86DF-F584FEB8B31B}</ProjectGuid>
+    <ProjectGuid>{144F167F-37A9-4FF1-B859-252C6791C46A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logic</RootNamespace>
-    <AssemblyName>Logic</AssemblyName>
+    <RootNamespace>Models</RootNamespace>
+    <AssemblyName>Models</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,19 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GebruikerLogic.cs" />
-    <Compile Include="ProductLogic.cs" />
+    <Compile Include="Administrator.cs" />
+    <Compile Include="Enums\BetaalMethode.cs" />
+    <Compile Include="Enums\Genre.cs" />
+    <Compile Include="Enums\Uitgever.cs" />
+    <Compile Include="Gebruiker.cs" />
+    <Compile Include="Inloggen.cs" />
+    <Compile Include="Keycode.cs" />
+    <Compile Include="Klant.cs" />
+    <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj">
-      <Project>{4ff5374a-af56-4ac6-9a2c-fa3871cf99c2}</Project>
-      <Name>DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{144f167f-37a9-4ff1-b859-252c6791c46a}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
+    <Compile Include="ViewModelProductKeycode.cs" />
+    <Compile Include="ViewModelProductKeycodeList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
