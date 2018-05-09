@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace DAL
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
+
+            //Alle bestaande producten ophalen uit de database
             SqlCommand cmd3 = new SqlCommand(
                 @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product", con);
 
@@ -40,22 +43,35 @@ namespace DAL
                 }
             }
 
+            //De huidige voorraad ophalen vanuit de database voor elk product aan de hand van een Stored Procedure
             foreach (var item in producten)
             {
-                SqlCommand cmd4 = new SqlCommand(
-                    @"SELECT KeycodeID FROM Keycode where ProductID = @productid", con);
-                cmd4.Parameters.AddWithValue("@productid", item.ProductID);
+                    // 1.  create a command object identifying the stored procedure
+                    SqlCommand cmd = new SqlCommand("ProductVoorraad", con);
 
-                using (SqlDataReader reader = cmd4.ExecuteReader())
-                {
-                    while (reader.Read())
+                    // 2. set the command object so it knows to execute a stored procedure
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // 3. add parameter to command, which will be passed to the stored procedure
+                    cmd.Parameters.Add(new SqlParameter("@ProductID", item.ProductID));
+
+                    // execute the command
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
                     {
-                        Keycode keycode = new Keycode();
-                        keycode.KeycodeID = reader.GetInt32(0);
-                        item.Keycode.Add(keycode);
+                        // iterate through results, printing each to console
+                        while (rdr.Read())
+                        {
+                            Keycode keycode = new Keycode();
+                            keycode.KeycodeID = rdr.GetInt32(0);
+                            item.Keycode.Add(keycode);
+                        }
                     }
+                foreach (var keycode in item.Keycode)
+                {
+                    item.Hoeveelheid = item.Hoeveelheid + 1;
                 }
             }
+            con.Close();
             return producten;
         }
 
@@ -65,11 +81,13 @@ namespace DAL
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
+            //Verwijderen van alle keycodes die bij de ProductID behoren
             SqlCommand cmd4 = new SqlCommand(
                 @"DELETE FROM [Keycode] WHERE ProductID = @productid", con);
             cmd4.Parameters.AddWithValue("@productid", id);
             cmd4.ExecuteNonQuery();
 
+            //Verwijderen van de Product uit de database aan de hand van de ProductID
             SqlCommand cmd3 = new SqlCommand(
                 @"DELETE FROM [Product] WHERE ProductID = @productid", con);
             cmd3.Parameters.AddWithValue("@productid", id);
@@ -78,10 +96,12 @@ namespace DAL
             con.Close();
         }
 
-        public void CreateProduct(Product product)
+        public void CreateProduct(Product product, int hoeveeelheid)
         {
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
+
+            //Alle gegevens van de doorgegeven product toevoegen aan de database (Product tabel)
             SqlCommand cmd6 =
                 new SqlCommand(
                     @"INSERT INTO [Product] (Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto) VALUES (@naam, @uitgever, @genre, @prijs, @foto, @achtergrondFoto)", con);
@@ -93,6 +113,7 @@ namespace DAL
             cmd6.Parameters.AddWithValue("@achtergrondfoto", product.AchtergrondFoto);
             cmd6.ExecuteNonQuery();
 
+            //De nieuwe automatisch aangemaakte productID ophalen 
             SqlCommand cmd4 = new SqlCommand(
                 @"SELECT ProductID FROM [Product] WHERE Naam = @naam AND Uitgever = @uitgever AND Genre = @genre AND Prijs = @prijs AND Foto = @foto AND AchtergrondFoto = @achtergrondfoto", con);
             cmd4.Parameters.AddWithValue("@naam", product.Naam);
@@ -111,10 +132,14 @@ namespace DAL
                 }
             }
 
-            SqlCommand cmd3 = new SqlCommand(
-                @"INSERT INTO [Keycode] (ProductID) VALUES (@productid)", con);
-            cmd3.Parameters.AddWithValue("@productid", product.ProductID);
-            cmd3.ExecuteNonQuery();
+            //Keycodes toevoegen voor het nieuwe aangemaakte product op bases van de doorgegeven hoeveelheid dus als er 3 wordt doorgegeven worden er 3 keycodes aan verbonden
+            for (int i = 0; i != hoeveeelheid; i++)
+            {
+                SqlCommand cmd3 = new SqlCommand(
+                    @"INSERT INTO [Keycode] (ProductID) VALUES (@productid)", con);
+                cmd3.Parameters.AddWithValue("@productid", product.ProductID);
+                cmd3.ExecuteNonQuery();
+            }
 
             con.Close();
         }
@@ -123,6 +148,8 @@ namespace DAL
         {
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
+
+            //Product gegevens aanpassen aan de hand van de doorgegeven ProductID
             SqlCommand cmd6 =
                 new SqlCommand(
                     @"UPDATE [Product] SET Naam = @naam, Uitgever = @uitgever, Genre = @genre, Prijs = @prijs, Foto = @foto, AchtergrondFoto = @achtergrondfoto WHERE ProductID = @productid", con);
@@ -143,6 +170,7 @@ namespace DAL
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
+            //Gegevens van een specifieke product ophalen aan de hand van de ProductID
             SqlCommand cmd3 = new SqlCommand(
                 @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product WHERE ProductID = @productid", con);
             cmd3.Parameters.AddWithValue("@productid", id);
@@ -163,35 +191,47 @@ namespace DAL
             }
             return product;
         }
-        public object KeycodeOphalen(int productid)
+        public List<Keycode> KeycodeOphalen(int productid)
         {
-            Keycode keycode = new Keycode();
+            List<Keycode> keycodes = new List<Keycode>();
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
-            SqlCommand cmd3 = new SqlCommand(
-                @"SELECT KeycodeID, ProductID FROM Keycode WHERE ProductID = @productid", con);
-            cmd3.Parameters.AddWithValue("@productid", productid);
+            //Alle keycodes ophalen van een specifieke product doormiddel van een Stored Procedure die deze allemaal returnt
 
-            using (SqlDataReader reader = cmd3.ExecuteReader())
+            // 1.  create a command object identifying the stored procedure
+            SqlCommand cmd = new SqlCommand("ProductVoorraad", con);
+
+            // 2. set the command object so it knows to execute a stored procedure
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // 3. add parameter to command, which will be passed to the stored procedure
+            cmd.Parameters.Add(new SqlParameter("@ProductID", productid));
+
+            // execute the command
+            using (SqlDataReader rdr = cmd.ExecuteReader())
             {
-                while (reader.Read())
+                // iterate through results, printing each to console
+                while (rdr.Read())
                 {
-                    keycode.KeycodeID = reader.GetInt32(0);
-                    keycode.ProductID = reader.GetInt32(1);
+                    Keycode keycode = new Keycode();
+                    keycode.KeycodeID = rdr.GetInt32(0);
+                    keycodes.Add(keycode);
                 }
             }
 
-            return keycode;
+            con.Close();
+            return keycodes;
         }
 
-        public string ProductVerkopen(int KlantID, int ProductID)
+        public string ProductVerkopen(int KlantID, int keycodeID)
         {
-            int keycodeID = 0;
+            int KeycodeID = 0;
             int WinkelwagenID = 0;
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
+            //De winkelwagen selecteren die bij de Klant behoord
             SqlCommand cmd5 = new SqlCommand(@"SELECT WinkelwagenID FROM Winkelwagen 
                                         WHERE KlantID = @klantid", con);
             cmd5.Parameters.AddWithValue("@klantid", KlantID);
@@ -203,22 +243,24 @@ namespace DAL
                 }
             }
 
-            SqlCommand cmd3 = new SqlCommand(@"SELECT KeycodeID FROM Keycode 
-                                        WHERE ProductID = @productid AND WinkelwagenID = @winkelwagenid", con);
-            cmd3.Parameters.AddWithValue("@productid", ProductID);
+            //Alle keycodes ophalen die zich in de winkelwagen bevinden
+            SqlCommand cmd3 = new SqlCommand(@"SELECT KeycodeID FROM KeycodeWinkelwagen 
+                                        WHERE WinkelwagenID = @winkelwagenid AND KeycodeID = @keycode", con);
+            cmd3.Parameters.AddWithValue("@keycode", keycodeID);
             cmd3.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
             using (SqlDataReader reader = cmd3.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    keycodeID = reader.GetInt32(0);
+                    KeycodeID = reader.GetInt32(0);
                 }
             }
 
+            //De keycode koppelen aan de klant zodat hij 'verkocht' is de saldo check etc wordt door een trigger gedaan in mijn database 
             try
             {
                 SqlCommand cmd4 = new SqlCommand(@"UPDATE[Keycode] SET KlantID = @klantid WHERE KeycodeID = @keycodeid", con);
-                cmd4.Parameters.AddWithValue("@keycodeid", keycodeID);
+                cmd4.Parameters.AddWithValue("@keycodeid", KeycodeID);
                 cmd4.Parameters.AddWithValue("@klantid", KlantID);
                 cmd4.ExecuteNonQuery();
             }
@@ -234,6 +276,7 @@ namespace DAL
             con.Close();
             return String.Empty;
         }
+
         public List<Product> AlleProductenvanGebruiker(int id)
         {
             List<Keycode> keycodes = new List<Keycode>();
@@ -242,6 +285,7 @@ namespace DAL
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
+            //Selecteren van alle keycodes die bij een klant behoren
             SqlCommand cmd4 = new SqlCommand(
                 @"SELECT KeycodeID FROM Keycode where klantID = @klantid", con);
             cmd4.Parameters.AddWithValue("@klantid", id);
@@ -255,6 +299,8 @@ namespace DAL
                     keycodes.Add(keycode);
                 }
             }
+
+            //ophalen van de gegevens van alle producten die bij de keycodes van de Klant behoren
             foreach (var item in keycodes)
             {
                 Product product = new Product();
@@ -293,5 +339,193 @@ namespace DAL
             }
             return producten;
         }
+
+        public void Voorraadbijvullen(int productid, int hoeveelheid)
+        {
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            //Aan de hand van de doorgegeven hoeveelheid extra keycodes toevoegen en koppelen aan een product zodat de voorraad wordt bijgevuld
+            for (int i = 0; i != hoeveelheid; i++)
+            {
+                SqlCommand cmd3 = new SqlCommand(
+                    @"INSERT INTO [Keycode] (ProductID) VALUES (@productid)", con);
+                cmd3.Parameters.AddWithValue("@productid", productid);
+                cmd3.ExecuteNonQuery();
+            }
+        }
+
+        public List<Product> ProductenGenre(Genre Genre)
+        {
+            List<Product> producten = new List<Product>();
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            //Ophalen van alle producten aan de hand van een bepaald Genre zodat de klant kan sorteren op genre
+            SqlCommand cmd3 = new SqlCommand(
+                @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product Where Genre = @genre", con);
+            cmd3.Parameters.AddWithValue("@genre", Genre);
+
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.ProductID = reader.GetInt32(0);
+                    product.Naam = reader.GetString(1);
+                    product.Uitgever = reader.GetFieldValue<Uitgever>(2);
+                    product.Genre = reader.GetFieldValue<Genre>(3);
+                    product.Prijs = reader.GetDecimal(4);
+                    product.Foto = reader.GetString(5);
+                    product.AchtergrondFoto = reader.GetString(6);
+                    producten.Add(product);
+
+                }
+            }
+
+            foreach (var item in producten)
+            {
+                // 1.  create a command object identifying the stored procedure
+                SqlCommand cmd = new SqlCommand("ProductVoorraad", con);
+
+                // 2. set the command object so it knows to execute a stored procedure
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // 3. add parameter to command, which will be passed to the stored procedure
+                cmd.Parameters.Add(new SqlParameter("@ProductID", item.ProductID));
+
+                // execute the command
+                using (SqlDataReader rdr = cmd.ExecuteReader())
+                {
+                    // iterate through results, printing each to console
+                    while (rdr.Read())
+                    {
+                        Keycode keycode = new Keycode();
+                        keycode.KeycodeID = rdr.GetInt32(0);
+                        item.Keycode.Add(keycode);
+                    }
+                }
+                foreach (var keycode in item.Keycode)
+                {
+                    item.Hoeveelheid = item.Hoeveelheid + 1;
+                }
+            }
+            con.Close();
+            return producten;
+        }
+
+        public List<Product> ProductenPrijsHoogLaag()
+        {
+            List<Product> producten = new List<Product>();
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            //Ophalen van alle producten gesorteerd op prijs van hoog naar laag
+            SqlCommand cmd3 = new SqlCommand(
+                @"SELECT* FROM Product ORDER BY Prijs DESC", con);
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.ProductID = reader.GetInt32(0);
+                    product.Naam = reader.GetString(1);
+                    product.Uitgever = reader.GetFieldValue<Uitgever>(2);
+                    product.Genre = reader.GetFieldValue<Genre>(3);
+                    product.Prijs = reader.GetDecimal(4);
+                    product.Foto = reader.GetString(5);
+                    product.AchtergrondFoto = reader.GetString(6);
+                    producten.Add(product);
+
+                }
+            }
+
+            foreach (var item in producten)
+            {
+                // 1.  create a command object identifying the stored procedure
+                SqlCommand cmd = new SqlCommand("ProductVoorraad", con);
+
+                // 2. set the command object so it knows to execute a stored procedure
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // 3. add parameter to command, which will be passed to the stored procedure
+                cmd.Parameters.Add(new SqlParameter("@ProductID", item.ProductID));
+
+                // execute the command
+                using (SqlDataReader rdr = cmd.ExecuteReader())
+                {
+                    // iterate through results, printing each to console
+                    while (rdr.Read())
+                    {
+                        Keycode keycode = new Keycode();
+                        keycode.KeycodeID = rdr.GetInt32(0);
+                        item.Keycode.Add(keycode);
+                    }
+                }
+                foreach (var keycode in item.Keycode)
+                {
+                    item.Hoeveelheid = item.Hoeveelheid + 1;
+                }
+            }
+            con.Close();
+            return producten;
+        }
+        public List<Product> ProductenPrijsLaagHoog()
+        {
+            List<Product> producten = new List<Product>();
+            SqlConnection con = new SqlConnection(ConnectionString);
+            con.Open();
+
+            //Ophalen van alle producten gesorteerd op prijs van laag naar hoog
+            SqlCommand cmd3 = new SqlCommand(
+                @"SELECT* FROM Product ORDER BY Prijs ASC", con);
+            using (SqlDataReader reader = cmd3.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.ProductID = reader.GetInt32(0);
+                    product.Naam = reader.GetString(1);
+                    product.Uitgever = reader.GetFieldValue<Uitgever>(2);
+                    product.Genre = reader.GetFieldValue<Genre>(3);
+                    product.Prijs = reader.GetDecimal(4);
+                    product.Foto = reader.GetString(5);
+                    product.AchtergrondFoto = reader.GetString(6);
+                    producten.Add(product);
+
+                }
+            }
+
+            foreach (var item in producten)
+            {
+                // 1.  create a command object identifying the stored procedure
+                SqlCommand cmd = new SqlCommand("ProductVoorraad", con);
+
+                // 2. set the command object so it knows to execute a stored procedure
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // 3. add parameter to command, which will be passed to the stored procedure
+                cmd.Parameters.Add(new SqlParameter("@ProductID", item.ProductID));
+
+                // execute the command
+                using (SqlDataReader rdr = cmd.ExecuteReader())
+                {
+                    // iterate through results, printing each to console
+                    while (rdr.Read())
+                    {
+                        Keycode keycode = new Keycode();
+                        keycode.KeycodeID = rdr.GetInt32(0);
+                        item.Keycode.Add(keycode);
+                    }
+                }
+                foreach (var keycode in item.Keycode)
+                {
+                    item.Hoeveelheid = item.Hoeveelheid + 1;
+                }
+            }
+            con.Close();
+            return producten;
+        }
     }
+
 }

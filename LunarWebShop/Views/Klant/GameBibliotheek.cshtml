@@ -4,6 +4,9 @@
 @if (Session["Klant"] != null)
 {
     var klant = Session["Klant"] as Klant;
+
+    <center style="padding: 4rem 2rem;">
+    <h2>Uw games</h2>
     <div style="padding: 4rem 2rem; width: 80%; height: 100%; position: relative; bottom: 0%; left: 10%; right: 0%; margin: auto;">
         <ul style="list-style: none;margin: 0;padding: 0;overflow: hidden;float: left;">
             @foreach (var item in Model)
@@ -11,19 +14,18 @@
                 <li style="float: left">
                     <div style="display: inline-block; width: 255px; height: 322px; margin: 1em;">
                         <div style="width: 255px; height: 161px; position: relative;display: flex; justify-content: center; align-items: center;background: url(@Url.Content(item.AchtergrondFoto)) no-repeat; background-size: cover;">
-                            <div style="width: 80px; height: 100px; position: absolute; margin-top: 50px; margin-left: -62px; z-index:1; border: 1px solid white;">
+                            <div style="width: 80px; height: 100px; position: absolute; margin-top: 50px; margin-left: -62px; z-index:1; border:1px solid #e0e0e0;">
                                 <img style="width: 100%;" src="@Url.Content(item.Foto)" class="img-responsive" alt="a" />
                             </div>
 
                         </div>
-                        <div style="width: 255px; height: 161px; background-color: white; position: relative">
+                        <div style="width: 255px; height: 161px; background-color: white; position: relative; border:1px solid #e0e0e0;">
                             <p style="padding-top: 10%;">
                                 <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
                                 <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
-                                @Html.ActionLink("Details", "Details", "Producten", new { id = item.ProductID }, new { @style = "margin-left: 10%" })
-                                <a id="btn_add" href=@Url.Action("Add", "WinkelwagenManagement", new {KlantID = klant.KlantID, KeycodeID = item.Keycode.FirstOrDefault().KeycodeID})>
-                            <p style="margin-left: 10%;">Voeg toe aan winkelwagen</p>
-                            </a>
+                                <a id="btn_add")>
+                                    <p style="margin-left: 10%;">Uw Activatiecode : @item.Keycode.First().KeycodeID</p>
+                                </a>
                             </p>
 
                         </div>
@@ -33,31 +35,9 @@
             }
         </ul>
     </div>
+    </center>
 }
 else
 {
-    <div style="padding: 4rem 2rem; width: 80%; height: 100%; position: relative; bottom: 0%; left: 10%; right: 0%; margin: auto;">
-        <ul style="list-style: none;margin: 0;padding: 0;overflow: hidden;float: left;">
-            @foreach (var item in Model)
-            {
-                <li style="float: left">
-                    <div style="display: inline-block; width: 255px; height: 322px; margin: 1em;">
-                        <div style="width: 255px; height: 161px; position: relative;display: flex; justify-content: center; align-items: center;background: url(@Url.Content(item.AchtergrondFoto)) no-repeat; background-size: cover;">
-                            <div style="width: 80px; height: 100px; position: absolute; margin-top: 50px; margin-left: -62px; z-index:1; border: 1px solid white;">
-                                <img style="width: 100%;" src="@Url.Content(item.Foto)" class="img-responsive" alt="a" />
-                            </div>
-                        </div>
-                        <div style="width: 255px; height: 161px; background-color: white; position: relative;">
-                            <p style="padding-top: 10%;">
-                                <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
-                                <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
-                                @Html.ActionLink("Details", "Details", "Producten", new { id = item.ProductID }, new { @style = "margin-left: 10%" })
-                            </p>
-                        </div>
-                    </div>
-                </li>
-            }
-        </ul>
-
-    </div>
+    Response.Redirect("../Home/Index");
 }

@@ -66,11 +66,14 @@
                         @Html.DisplayFor(model => model.Product.AchtergrondFoto)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.keycode.KeycodeID)
+                        @Html.DisplayNameFor(model => model.Product.Keycode)
                     </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.keycode.KeycodeID)
-                    </dd>
+                    @foreach (var item in Model.Product.Keycode)
+                    {
+                        <dd>
+                            @Html.DisplayFor(model => item.KeycodeID)
+                        </dd>
+                    }
 
                 </dl>
             </div>
@@ -114,6 +117,14 @@ else
                 <dd>
                     @Html.DisplayFor(model => model.Product.Prijs)
                 </dd>
+                <dt>
+                    Voorraad
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Hoeveelheid)
+                </dd>
+
             </dl>
         </div>
     </center>

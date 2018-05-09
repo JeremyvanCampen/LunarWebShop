@@ -25,14 +25,14 @@ namespace Logic
             return _gebruikerEngine.WinkelwagenProducten(KlantID);
         }
 
-        public void VoegToeAanWinkelwagen(int KlantID, int KeycodeID)
+        public string VoegToeAanWinkelwagen(int KlantID,int ProductID)
         {
-            _gebruikerEngine.VoegToeAanWinkelwagen(KlantID, KeycodeID);
+           return _gebruikerEngine.VoegToeAanWinkelwagen(KlantID, ProductID);
         }
 
-        public void VerwijderUitWinkelwagen(int KeycodeID)
+        public void VerwijderUitWinkelwagen(int KeycodeID,int productid, int klantid)
         {
-            _gebruikerEngine.VerwijderUitWinkelwagen(KeycodeID);
+            _gebruikerEngine.VerwijderUitWinkelwagen(KeycodeID, productid, klantid);
         }
         public void SaldoToevoegen(decimal Saldotoevoegen, int id)
         {

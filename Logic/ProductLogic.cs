@@ -20,9 +20,9 @@ namespace Logic
             _productEngine.DeleteProduct(id);
         }
 
-        public void CreateProduct(Product product)
+        public void CreateProduct(Product product, int hoeveelheid)
         {
-            _productEngine.CreateProduct(product);
+            _productEngine.CreateProduct(product, hoeveelheid);
         }
 
         public void ProductAanpassen(Product product)
@@ -35,14 +35,14 @@ namespace Logic
             return _productEngine.ProductOphalen(id);
         }
 
-        public object KeycodeOphalen(int productid)
+        public List<Keycode> KeycodeOphalen(int productid)
         {
             return _productEngine.KeycodeOphalen(productid);
         }
 
-        public string ProductVerkopen(int KlantID, int ProductID)
+        public string ProductVerkopen(int KlantID, int KeycodeID)
         {
-            return _productEngine.ProductVerkopen(KlantID, ProductID);
+            return _productEngine.ProductVerkopen(KlantID, KeycodeID);
         }
 
         public List<Product> AlleProductenvanGebruiker(int id)
@@ -50,5 +50,22 @@ namespace Logic
             return _productEngine.AlleProductenvanGebruiker(id);
         }
 
+        public void Voorraadbijvullen(int productid, int hoeveelheid)
+        {
+            _productEngine.Voorraadbijvullen(productid,hoeveelheid);
+        }
+
+        public List<Product> ProductenGenre (Genre Genre)
+        {
+            return _productEngine.ProductenGenre(Genre);
+        }
+        public List<Product> ProductenPrijsHoogLaag()
+        {
+            return _productEngine.ProductenPrijsHoogLaag();
+        }
+        public List<Product> ProductenPrijsLaagHoog()
+        {
+            return _productEngine.ProductenPrijsLaagHoog();
+        }
     }
 }

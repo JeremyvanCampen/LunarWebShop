@@ -8,7 +8,6 @@ namespace Models
 {
     public class Administrator : Gebruiker
     {
-
-
+        public int AdministratorID { get; set; }
     }
 }

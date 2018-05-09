@@ -13,9 +13,9 @@ namespace LunarWebShop.Controllers
     {
         private GebruikerLogic GebruikerLogic = new GebruikerLogic();
 
-        public ActionResult Add(int KlantID, int KeycodeID)
+        public ActionResult Add(int KlantID, int ProductID)
         {
-            GebruikerLogic.VoegToeAanWinkelwagen(KlantID, KeycodeID);
+            GebruikerLogic.VoegToeAanWinkelwagen(KlantID, ProductID);
             return RedirectToAction("Index", "Home");
         }
 
@@ -41,9 +41,9 @@ namespace LunarWebShop.Controllers
             }
             return View(VMPK);
         }
-        public ActionResult Remove(int KeycodeID, int id)
+        public ActionResult Remove(int KeycodeID,int productid, int id)
         {
-            GebruikerLogic.VerwijderUitWinkelwagen(KeycodeID);
+            GebruikerLogic.VerwijderUitWinkelwagen(KeycodeID, productid, id);
             return RedirectToAction("Myorder", new{id = id});
         }
 

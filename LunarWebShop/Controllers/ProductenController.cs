@@ -24,8 +24,16 @@ namespace LunarWebShop.Controllers
             var product = ProductLogic.ProductOphalen(id);
             var keycode = ProductLogic.KeycodeOphalen(id);
             ViewModelProductKeycode ViewModelProductKeycode = new ViewModelProductKeycode();
-            ViewModelProductKeycode.keycode = keycode as Keycode;
             ViewModelProductKeycode.Product = product as Product;
+            foreach (var item in keycode)
+            {
+                ViewModelProductKeycode.Product.Keycode.Add(item);
+            }
+
+            foreach (var item in ViewModelProductKeycode.Product.Keycode)
+            {
+                ViewModelProductKeycode.Product.Hoeveelheid = ViewModelProductKeycode.Product.Hoeveelheid + 1;
+            }
 
             return View(ViewModelProductKeycode);
         }
@@ -43,7 +51,7 @@ namespace LunarWebShop.Controllers
         {
             try
             {
-                //foto toevoegen
+                //foto opslaan in de map Images en de URL daarvan opslaan in de database zodat deze kan worden uitgelezen
                 string filename = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
                 string extention = Path.GetExtension(product.ImageFile.FileName);
                 filename = filename + DateTime.Now.ToString("yymmssfff") + extention;
@@ -57,8 +65,9 @@ namespace LunarWebShop.Controllers
                 product.AchtergrondFoto = "~/Images/" + filename2;
                 filename2 = Path.Combine(Server.MapPath("~/Images/"), filename2);
                 product.ImageFile2.SaveAs(filename2);
+
                 //Keycode en product toevoegen aan database
-                ProductLogic.CreateProduct(product);
+                ProductLogic.CreateProduct(product, product.Hoeveelheid);
 
                 return RedirectToAction("Product");
             }
@@ -86,6 +95,7 @@ namespace LunarWebShop.Controllers
             if (!ModelState.IsValid)
                 return View(OriginalProduct);
 
+            //foto opslaan in de map Images en de URL daarvan opslaan in de database zodat deze kan worden uitgelezen
             string filename = Path.GetFileNameWithoutExtension(ProductToEdit.ImageFile.FileName);
             string extention = Path.GetExtension(ProductToEdit.ImageFile.FileName);
             filename = filename + DateTime.Now.ToString("yymmssfff") + extention;
@@ -120,5 +130,17 @@ namespace LunarWebShop.Controllers
             ProductLogic.DeleteProduct(id);
             return RedirectToAction("Product");
         }
+        [HttpGet]
+        public ActionResult VoorraadBijvullen(int productid)
+        {
+            return View(ProductLogic.ProductOphalen(productid));
+        }
+        [HttpPost]
+        public ActionResult VoorraadBijvullen([Bind()] Product product)
+        {
+            ProductLogic.Voorraadbijvullen(product.ProductID, product.Hoeveelheid);
+            return RedirectToAction("Product", "Producten");
+        }
+
     }
 }

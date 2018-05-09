@@ -19,7 +19,7 @@ namespace Models
         public string Straat { get; set; }
 
         [Display(Name = "Huisnummer")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Huisnummer met ingevoerd worden")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Huisnummer moet ingevoerd worden")]
         public int Huisnummer { get; set; }
 
 

@@ -10,14 +10,12 @@ namespace DAL
 {
     public class GebruikerEngine
     {
-        private int GebruikerID;
-        private int WinkelwagenID;
-
         private string ConnectionString =
             "Data Source = (LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Lunar.mdf;Integrated Security = True";
 
         public string KlantToevoegen(Klant klant)
         {
+          int GebruikerID = 0;
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
 
@@ -247,11 +245,14 @@ namespace DAL
 
         public List<Product> WinkelwagenProducten(int KlantID)
         {
+            int WinkelwagenID = 0;
             SqlConnection con = new SqlConnection(ConnectionString);
-            List<int> keycodes = new List<int>();
+            List<Keycode> keycodes = new List<Keycode>();
             List<Product> producten = new List<Product>();
             List<int> productids = new List<int>();
             con.Open();
+
+            //Selecteren van de juiste winkelwagen behorende bij de juiste klant doormiddel van een KlantID
             SqlCommand cmd3 = new SqlCommand(@"SELECT WinkelwagenID FROM Winkelwagen 
                                         WHERE KlantID = @klantid", con);
             cmd3.Parameters.AddWithValue("@klantid", KlantID);
@@ -263,21 +264,24 @@ namespace DAL
                 }
             }
 
-            SqlCommand cmd4 = new SqlCommand(@"SELECT KeycodeID FROM Keycode
+            //Selecteren van alle keycode's die zich in de winkelwagen bevinden zodat de bijbehorende producten kunnen worden opgehaald
+            SqlCommand cmd4 = new SqlCommand(@"SELECT KeycodeID FROM KeycodeWinkelwagen
                                         WHERE WinkelwagenID = @winkelwagenid", con);
             cmd4.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
             using (SqlDataReader reader = cmd4.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    keycodes.Add(reader.GetInt32(0));
+                    Keycode keycode = new Keycode();
+                    keycode.KeycodeID = reader.GetInt32(0);
+                    keycodes.Add(keycode);
                 }
             }
-
+            //Ophalen van de productID's die bij de opgehaalde keycodes behoren zodat informatie over deze producten kunnen worden opgehaald
             foreach (var item in keycodes)
             {
                 SqlCommand cmd5 = new SqlCommand(@"SELECT ProductID FROM Keycode WHERE keycodeid = @keycodeid", con);
-                cmd5.Parameters.AddWithValue("@keycodeid", item);
+                cmd5.Parameters.AddWithValue("@keycodeid", item.KeycodeID);
 
                 using (SqlDataReader reader = cmd5.ExecuteReader())
                 {
@@ -289,11 +293,12 @@ namespace DAL
                 }
             }
 
+            //Selecteren van alle gegevens van de producten die bij de eerder opgehaalde productID's behoren (Naam, prijs etc.)
             foreach (var item in productids)
             {
                 SqlCommand cmd6 =
                     new SqlCommand(
-                        @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product WHERE ProductID = @productid ", con);
+                        @"SELECT ProductID, Naam, Uitgever, Genre, Prijs, Foto, AchtergrondFoto FROM Product WHERE ProductID = @productid", con);
                 cmd6.Parameters.AddWithValue("@productid", item);
 
                 using (SqlDataReader reader = cmd6.ExecuteReader())
@@ -313,32 +318,23 @@ namespace DAL
                 }
             }
 
-            foreach (var item in producten)
+            //Alle keycodes en producten aan elkaar koppelen en dat returnen zodat dit kan worden weergegeven in de View
+            for (int i = 0; i != producten.Count; i++)
             {
-                SqlCommand cmd8 = new SqlCommand(
-                    @"SELECT KeycodeID FROM Keycode where ProductID = @productid", con);
-                cmd8.Parameters.AddWithValue("@productid", item.ProductID);
-
-                using (SqlDataReader reader = cmd8.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Keycode keycode = new Keycode();
-                        keycode.KeycodeID = reader.GetInt32(0);
-                        item.Keycode.Add(keycode);
-                    }
-                }
+                producten[i].Keycode.Add(keycodes[i]);
             }
-
-
             con.Close();
             return producten;
         }
 
-        public void VoegToeAanWinkelwagen(int KlantID, int KeycodeID)
+        public String VoegToeAanWinkelwagen(int KlantID, int ProductID)
         {
+            int WinkelwagenID = 0;
+            int keycodeid = 0;
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
+
+            //Selecteren van de juiste winkelwagen behorende bij de juiste klant doormiddel van een KlantID
             SqlCommand cmd3 = new SqlCommand(@"SELECT WinkelwagenID FROM Winkelwagen 
                                         WHERE KlantID = @klantid", con);
             cmd3.Parameters.AddWithValue("@klantid", KlantID);
@@ -350,22 +346,45 @@ namespace DAL
                 }
             }
 
-            string WinkelwagenQuery = "UPDATE Keycode SET WinkelwagenID = @winkelwagenid WHERE KeycodeID = @keycodeid;";
-            SqlCommand cmd5 = new SqlCommand(WinkelwagenQuery, con);
-            cmd5.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
-            cmd5.Parameters.AddWithValue("@keycodeid", KeycodeID);
-            cmd5.ExecuteNonQuery();
+            //Selecteren van de eerste vrije keycode in de database
+            SqlCommand cmd4 = new SqlCommand(@"SELECT TOP 1 KeycodeID FROM Keycode WHERE ProductID = @productID AND KlantID IS NULL AND KeycodeID not in (Select keycodeID FROM KeycodeWinkelwagen WHERE WinkelwagenID = (SELECT Winkelwagenid from Winkelwagen Where WinkelwagenID = @winkelwagenid))", con);
+            cmd4.Parameters.AddWithValue("@productID", ProductID);
+            cmd4.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
+            using (SqlDataReader reader = cmd4.ExecuteReader())
+            {
+                    while (reader.Read())
+                    {
+                        keycodeid = reader.GetInt32(0);
+                    }
+            }
+                
+                //Als er geen keycode in de database aanwezig is zal er Null worden gereturnd en dan return ik naar mijn View "Geen voorraad"
+                if (keycodeid == 0)
+                {
+                    return "Geen Voorraad";
+                }
 
-            con.Close();
+                    //De keycode die is geselecteerd koppelen aan de winkelwagen van de Klant
+                    string UpdateWinkelwagen = "INSERT INTO [KeycodeWinkelwagen](WinkelwagenID,KeycodeID) Values(@winkelwagenid,@keycodeid)";
+                    SqlCommand cmd5 = new SqlCommand(UpdateWinkelwagen, con);
+                    cmd5.Parameters.AddWithValue("@keycodeid", keycodeid);
+                    cmd5.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
+                    cmd5.ExecuteNonQuery();
+                    con.Close();
+
+                    return "Succes";
         }
 
-        public void VerwijderUitWinkelwagen(int KeycodeID)
+        public void VerwijderUitWinkelwagen(int KeycodeID, int productid, int klantid)
         {
+            int WinkelwagenID = 0;
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
-            SqlCommand cmd3 = new SqlCommand(@"SELECT WinkelwagenID FROM Keycode 
-                                        WHERE KeycodeID = @keycodeid", con);
-            cmd3.Parameters.AddWithValue("@keycodeid", KeycodeID);
+
+            //Selecteren van de juiste winkelwagen behorende bij de juiste klant doormiddel van een KlantID
+            SqlCommand cmd3 = new SqlCommand(@"SELECT WinkelwagenID FROM Winkelwagen 
+                                        WHERE KlantID = @klantid", con);
+            cmd3.Parameters.AddWithValue("@klantid", klantid);
             using (SqlDataReader reader = cmd3.ExecuteReader())
             {
                 while (reader.Read())
@@ -374,12 +393,12 @@ namespace DAL
                 }
             }
 
-            string WinkelwagenQuery = "UPDATE Keycode SET WinkelwagenID = NULL WHERE KeycodeID = @keycodeid;";
+            //Verwijderen van de keycode uit een winkelwagen waar de keycodeID en winkelwagenID allebei aanwezig zijn
+            string WinkelwagenQuery = "DELETE FROM KeycodeWinkelwagen WHERE KeycodeID = @KeycodeID AND WinkelwagenID = @winkelwagenID;";
             SqlCommand cmd5 = new SqlCommand(WinkelwagenQuery, con);
-
-            cmd5.Parameters.AddWithValue("@keycodeid", KeycodeID);
+            cmd5.Parameters.AddWithValue("@keycodeID", KeycodeID);
+            cmd5.Parameters.AddWithValue("@winkelwagenid", WinkelwagenID);
             cmd5.ExecuteNonQuery();
-
             con.Close();
         }
 
@@ -387,6 +406,8 @@ namespace DAL
         {
             SqlConnection con = new SqlConnection(ConnectionString);
             con.Open();
+
+            //Selecteren van de juiste saldo van de klant aan de hand van de KlantID
             SqlCommand cmd3 = new SqlCommand(@"SELECT Saldo FROM Klant 
                                         WHERE KlantID = @klantid", con);
             cmd3.Parameters.AddWithValue("@klantid", id);
@@ -394,10 +415,13 @@ namespace DAL
             {
                 while (reader.Read())
                 {
+
+                    //De huidige saldo (vanuit de database) + de gewenste bedrag dat wordt toegevoegd
                     Saldotoevoegen = reader.GetDecimal(0) + Saldotoevoegen;
                 }
             }
 
+            //Updaten van de saldo van de gebruiker
             string WinkelwagenQuery = "UPDATE Klant SET Saldo = @saldo WHERE KlantID = @klantid;";
             SqlCommand cmd5 = new SqlCommand(WinkelwagenQuery, con);
 
@@ -416,6 +440,7 @@ namespace DAL
             con.Open();
             Klant klant = new Klant();
 
+            //Selecteren van alle gegevens van een klant min de de saldo aan de hand van de gebruikersnaam uit de Gebruiker tabel
             SqlCommand cmd3 = new SqlCommand(
                 @"SELECT GebruikerID, Voornaam, Achternaam, Email, Geboortedatum  FROM Gebruiker 
                                         WHERE Gebruikersnaam=@uname", con);
@@ -435,6 +460,7 @@ namespace DAL
                 }
             }
 
+            //Selecteren van straat en huisnummer uit de Klant tabel
             SqlCommand cmd8 = new SqlCommand(@"SELECT KlantID, Straat, Huisnummer FROM Klant 
                                         WHERE KlantID=@klantid", con);
             cmd8.Parameters.AddWithValue("@klantid", id);
@@ -460,6 +486,7 @@ namespace DAL
             con.Open();
             Klant klant = new Klant();
 
+            //Selecteren van alle gegevens van een klant aan de hand van de gebruikersnaam uit de Gebruiker tabel
             SqlCommand cmd3 = new SqlCommand(
                 @"SELECT GebruikerID, Voornaam, Achternaam, Email, Geboortedatum  FROM Gebruiker 
                                         WHERE Gebruikersnaam=@uname", con);
@@ -479,6 +506,8 @@ namespace DAL
                 }
             }
 
+
+            //Selecteren van straat, saldo en huisnummer uit de Klant tabel
             SqlCommand cmd8 = new SqlCommand(@"SELECT KlantID,Saldo, Straat, Huisnummer FROM Klant 
                                         WHERE KlantID=@klantid", con);
             cmd8.Parameters.AddWithValue("@klantid", id);

@@ -37,7 +37,7 @@ else
                         @Html.DisplayNameFor(model => model.Prijs)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Foto)
+                       Voorraad
                     </th>
                     <th></th>
                 </tr>
@@ -58,10 +58,11 @@ else
                             @Html.DisplayFor(modelItem => item.Prijs)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Foto)
+                            @Html.DisplayFor(modelItem => item.Hoeveelheid)
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new {id = item.ProductID}) |
+                            @Html.ActionLink("Voorraad bijvullen", "VoorraadBijvullen", new {productid = item.ProductID}) |
                             @Html.ActionLink("Details", "Details", new {id = item.ProductID}) |
                             @Html.ActionLink("Delete", "Delete", new {id = item.ProductID})
                         </td>

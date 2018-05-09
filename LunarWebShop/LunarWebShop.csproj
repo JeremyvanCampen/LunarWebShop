@@ -153,6 +153,7 @@
     <Compile Include="Controllers\GebruikerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductenController.cs" />
+    <Compile Include="Controllers\SorteerController.cs" />
     <Compile Include="Controllers\WinkelwagenManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -171,6 +172,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Cart.jpg" />
     <Content Include="Images\shopping-cart-32.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -199,9 +201,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Klant\RegistratieKlant.cshtml" />
     <Content Include="Views\Klant\Login.cshtml" />
     <Content Include="Views\Klant\MijnAccount.cshtml" />
@@ -213,6 +212,12 @@
     <Content Include="Views\WinkelwagenManagement\Myorder.cshtml" />
     <Content Include="Views\Klant\SaldoUploaden.cshtml" />
     <Content Include="Views\Klant\GameBibliotheek.cshtml" />
+    <Content Include="Views\Producten\VoorraadBijvullen.cshtml" />
+    <Content Include="Views\Sorteer\IndexSearch.cshtml" />
+    <Content Include="Views\Sorteer\IndexGenre.cshtml" />
+    <Content Include="Views\Sorteer\IndexPrijsLaagNaarHoog.cshtml" />
+    <Content Include="Views\Sorteer\IndexPrijsHoogNaarLaag.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

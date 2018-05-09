@@ -111,10 +111,17 @@ namespace LunarWebShop.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult ProductVerkopen(int productid, int id, string gebruikersnaam)
+        public ActionResult ProductVerkopen(int id, string gebruikersnaam)
         {
             string message = "";
-            message = ProductLogic.ProductVerkopen(id, productid);
+            foreach (Product p in GebruikerLogic.WinkelwagenProducten(id))
+            {
+                if (ProductLogic.ProductVerkopen(id, p.Keycode.First().KeycodeID) == "Onvoldoende Saldo")
+                {
+                    message = "Onvoldoende Saldo";
+                    break;
+                }
+            }
 
             if (message == "Onvoldoende Saldo")
             {

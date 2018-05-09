@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: rgb(245, 245, 245);
+    background-color: #E8E8E8;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -23,6 +23,6 @@ select,
 textarea {
     max-width: 280px;
 }
-.navbar-brand {
+.navbar-brand { 
     background-image: url(Images/shopping-cart-256.png);
 }
