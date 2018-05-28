@@ -5465,7 +5465,7 @@ button.close {
 }
 
 .modal-open {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .modal {
@@ -5483,6 +5483,7 @@ button.close {
 .modal-open .modal {
   overflow-x: hidden;
   overflow-y: auto;
+
 }
 
 .modal-dialog {
@@ -5540,7 +5541,6 @@ button.close {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1040;
   background-color: #000;
 }
 

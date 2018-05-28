@@ -12,8 +12,11 @@ namespace DAL
 {
     public class ProductEngine
     {
-        private string ConnectionString =
-            "Data Source = (LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Lunar.mdf;Integrated Security = True";
+        //private string ConnectionString =
+        //    "Data Source = (LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Lunar.mdf;Integrated Security = True";
+
+        //Deze connectionstring is voor de unittests
+        private string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Jeremy van Campen\\OneDrive\\ICT\\Semester 2\\Individueel Lunar\\LunarWebShop\\LunarWebShop\\App_Data\\Lunar.mdf";
 
         public List<Product> AlleProducten()
         {

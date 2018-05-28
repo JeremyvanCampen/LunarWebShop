@@ -7,6 +7,8 @@
     <title>@ViewBag.Title Lunar</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 </head>
 <body style="padding-top: 0px; text-align: left;">
     @{
@@ -99,8 +101,10 @@
 
     @RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+   
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+<script src="/Scripts/Jeremy.js"></script>
 </body>
 </html>
