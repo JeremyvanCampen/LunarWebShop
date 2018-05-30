@@ -1,4 +1,5 @@
-﻿@using System.Web.UI.WebControls
+﻿@using System.Security.Policy
+@using System.Web.UI.WebControls
 @using Models
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,10 @@
     <title>@ViewBag.Title Lunar</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
 </head>
 <body style="padding-top: 0px; text-align: left;">
     @{
@@ -18,59 +23,39 @@
     {
         if (klant != null)
         {
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a>Welkom, @klant.Voornaam</a>
-                        </li>
-                        <li class="nav-item">
-                            <a>Saldo : €@klant.Saldo</a>
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Mijn Games", "GameBibliotheek", "Klant", new { id = @klant.KlantID }, new { @style = "color:White;" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Mijn Account", "MijnAccount", "Klant", null, new { @style = "color:White;" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Saldo uploaden", "SaldoUploaden", "Klant", new { id = @klant.KlantID, gebruikersnaam = @klant.Gebruikersnaam }, new { @style = "color:White;" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Mijn winkelwagen", "Myorder", "WinkelwagenManagement", new { id = @klant.KlantID }, new { @class = "classname" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("uitloggen", "Uitloggen", "Klant", null, new { @style = "color:White;" })
-                        </li>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="@Url.Action("GameBibliotheek", "Klant", new { id = @klant.KlantID })">Mijn games</a></li>
+                        <li><a href="@Url.Action("SaldoUploaden", "Klant", new { id = @klant.KlantID, gebruikersnaam = @klant.Gebruikersnaam })">Saldo uploaden</a></li>
+                        <li><a href="@Url.Action("MijnAccount", "Klant", new { @style = "color:White;" })">Account</a></li>
+                        <li><a href="@Url.Action("Myorder", "WinkelwagenManagement", new { id = @klant.KlantID })">Winkelwagen</a></li>
                     </ul>
-                 </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li> <a>Welkom, @klant.Voornaam Saldo : €@klant.Saldo</a></li>
+                        <li><a href="@Url.Action("Uitloggen", "Klant", new {@style = "color:White;"})">Uitloggen</a></li>
+                    </ul>
+                </div>
             </nav>
 
         }
         if (admin != null)
         {
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a>Welkom Admin, @admin.Voornaam @admin.Achternaam</a>
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Dashboard", "Product", "Producten", null, new { @style = "color:White;" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("uitloggen", "Uitloggen", "Klant", null, new { @style = "color:White;" })
-                        </li>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a>Welkom Admin, @admin.Voornaam @admin.Achternaam</a></li>
+                        <li><a href="@Url.Action("Product", "Producten",new { @style = "color:White;" })">Dashboard</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="@Url.Action("Uitloggen", "Klant",  new { @style = "color:White;" })">Uitloggen</a></li>
                     </ul>
                 </div>
             </nav>
@@ -78,29 +63,30 @@
     }
     else
     {
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        @Html.ActionLink("Login", "Login", "Klant", null, new { @style = "color:White;" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Registreren", "RegistratieKlant", "Klant", null, new { @style = "color:White;" })
-                    </li>
+    
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("Login", "Klant",new { @style = "color:White;" })">Inloggen</a></li>
+                    <li><a href="@Url.Action("RegistratieKlant", "Klant", new {@style = "color:White;"})">Registreren</a></li>
                 </ul>
             </div>
         </nav>
     }
 
-    @RenderBody()
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+@RenderBody()
+    
+        <footer>
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+            <script src="/Scripts/Jeremy.js"></script>
+        </footer>
 </body>
 </html>

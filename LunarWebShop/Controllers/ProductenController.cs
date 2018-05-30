@@ -37,7 +37,27 @@ namespace LunarWebShop.Controllers
 
             return View(ViewModelProductKeycode);
         }
-          [HttpGet]
+        [HttpGet]
+        //post : Asyncdetails
+        public ActionResult AsyncDetails(int id)
+        {
+            var product = ProductLogic.ProductOphalen(id);
+            var keycode = ProductLogic.KeycodeOphalen(id);
+            ViewModelProductKeycode ViewModelProductKeycode = new ViewModelProductKeycode();
+            ViewModelProductKeycode.Product = product as Product;
+            foreach (var item in keycode)
+            {
+                ViewModelProductKeycode.Product.Keycode.Add(item);
+            }
+
+            foreach (var item in ViewModelProductKeycode.Product.Keycode)
+            {
+                ViewModelProductKeycode.Product.Hoeveelheid = ViewModelProductKeycode.Product.Hoeveelheid + 1;
+            }
+
+            return PartialView(ViewModelProductKeycode);
+        }
+        [HttpGet]
         // GET: Producten/Create
         public ActionResult Create()
         {
