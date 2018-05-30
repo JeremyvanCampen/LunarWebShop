@@ -55,7 +55,7 @@ namespace LunarWebShop.Controllers
                 ViewModelProductKeycode.Product.Hoeveelheid = ViewModelProductKeycode.Product.Hoeveelheid + 1;
             }
 
-            return PartialView("Details", ViewModelProductKeycode);
+            return PartialView(ViewModelProductKeycode);
         }
         [HttpGet]
         // GET: Producten/Create

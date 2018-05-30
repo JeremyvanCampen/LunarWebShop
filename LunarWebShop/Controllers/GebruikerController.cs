@@ -7,7 +7,6 @@ using System.Web.Routing;
 using System.Web.UI.WebControls.Expressions;
 using Logic;
 using Models;
-using Microsoft.Ajax.Utilities;
 
 namespace LunarWebShop.Controllers
 {
