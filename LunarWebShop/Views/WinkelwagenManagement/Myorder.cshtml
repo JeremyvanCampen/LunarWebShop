@@ -30,61 +30,63 @@ else
             }
             else
             {
-                <div class="container mb-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col"> </th>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Voorraad</th>
-                                        <th scope="col">Hoeveelheid</th>
-                                        <th scope="col">Prijs</th>
-                                        <th> </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    @foreach (var item in Model.Product)
-                                    {
-
+                <center style="padding: 4rem 2rem;">
+                    <div class="container mb-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
                                         <tr>
-                                            <td> <img style="width: 20%;" src="@Url.Content(@item.Foto)" alt="@item.Naam"/> </td>
-                                            <td>@Html.DisplayFor(modelItem => item.Naam)</td>
-                                            <td>Op voorraad</td>
-                                            <td>1</td>
-                                            <td>€@Html.DisplayFor(modelItem => item.Prijs)</td>
-                                            <td>
-                                                @Html.ActionLink("Verwijderen", "Remove", new {KeycodeID = item.Keycode.First().KeycodeID, id = klant.KlantID, productid = item.ProductID})
-                                            </td>
-
+                                            <th scope="col"> </th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Voorraad</th>
+                                            <th scope="col">Hoeveelheid</th>
+                                            <th scope="col">Prijs</th>
+                                            <th> </th>
                                         </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    }
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><strong>Totaal</strong></td>
-                                        <td><strong>€ @Model.TotaalBedrag</strong></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col mb-2">
-                            <div class="row">
-                                <div class="col-sm-12  col-md-6">
-                                    @Html.ActionLink("Doorgaan met winkelen", "Index", "Home", null, null)
+                                        @foreach (var item in Model.Product)
+                                        {
+
+                                            <tr>
+                                                <td> <img style="width: 20%;" src="@Url.Content(@item.Foto)" alt="@item.Naam"/> </td>
+                                                <td>@Html.DisplayFor(modelItem => item.Naam)</td>
+                                                <td>Op voorraad</td>
+                                                <td>1</td>
+                                                <td>€@Html.DisplayFor(modelItem => item.Prijs)</td>
+                                                <td>
+                                                    @Html.ActionLink("Verwijderen", "Remove", new {KeycodeID = item.Keycode.First().KeycodeID, id = klant.KlantID, productid = item.ProductID})
+                                                </td>
+
+                                            </tr>
+
+                                        }
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>Totaal</strong></td>
+                                            <td><strong>€ @Model.TotaalBedrag</strong></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                     @Html.ActionLink("Afrekenen met huidige saldo", "ProductVerkopen", "Klant", new { totaalbedrag = @Model.TotaalBedrag, id = klant.KlantID, gebruikersnaam = klant.Gebruikersnaam }, null)
+                            </div>
+                            <div class="col mb-2">
+                                <div class="row">
+                                    <div class="col-sm-12  col-md-6">
+                                        @Html.ActionLink("Doorgaan met winkelen", "Index", "Home", null, null)
+                                    </div>
+                                    @Html.ActionLink("Afrekenen met huidige saldo", "ProductVerkopen", "Klant", new { totaalbedrag = @Model.TotaalBedrag, id = klant.KlantID, gebruikersnaam = klant.Gebruikersnaam }, null)
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </center>
             }
       
         }

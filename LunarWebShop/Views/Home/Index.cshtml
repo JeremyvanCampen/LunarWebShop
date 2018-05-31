@@ -4,40 +4,7 @@
 @if (Session["Klant"] != null)
 {
     var klant = Session["Klant"] as Klant;
-    <div style="width: 100%; height: 100%; position: relative; bottom: 0%; left: 0%; right: 0%; margin: auto;display: inline">
-        <div style="width: 20%; float: left; width: 20%; padding: 4rem 2rem;">
-            <h6 style="text-decoration: underline; ">Sorteer op Genre</h6>
-            @Html.ActionLink("Action", "IndexGenre", "Sorteer", new { genre = "Action" }, null)
-            <br />
-            @Html.ActionLink("Adventure", "IndexGenre", "Sorteer", new { genre = "Adventure" }, null)
-            <br />
-            @Html.ActionLink("Fighting", "IndexGenre", "Sorteer", new { genre = "Fighting" }, null)
-            <br />
-            @Html.ActionLink("Platform", "IndexGenre", "Sorteer", new { genre = "Platform" }, null)
-            <br />
-            @Html.ActionLink("Puzzle", "IndexGenre", "Sorteer", new { genre = "Puzzle" }, null)
-            <br />
-            @Html.ActionLink("Racing", "IndexGenre", "Sorteer", new { genre = "Racing" }, null)
-            <br />
-            @Html.ActionLink("Roleplaying", "IndexGenre", "Sorteer", new { genre = "RolePlaying" }, null)
-            <br />
-            @Html.ActionLink("Shooter", "IndexGenre", "Sorteer", new { genre = "Shooter" }, null)
-            <br />
-            @Html.ActionLink("Simulation", "IndexGenre", "Sorteer", new { genre = "Simulation" }, null)
-            <br />
-            @Html.ActionLink("Sports", "IndexGenre", "Sorteer", new { genre = "Sports" }, null)
-            <br />
-            @Html.ActionLink("Strategy", "IndexGenre", "Sorteer", new { genre = "Strategy" }, null)
-            <br />
-            @Html.ActionLink("Mmorpg", "IndexGenre", "Sorteer", new { genre = "Mmorpg" }, null)
-            <br />
-            <br />
-            <h6 style="text-decoration: underline; ">Sorteer op Prijs</h6>
-            @Html.ActionLink("Prijs hoog - laag", "IndexPrijsHoogNaarLaag", "Sorteer", null, null)
-            <br />
-            @Html.ActionLink("Prijs laag - hoog", "IndexPrijsLaagNaarHoog", "Sorteer", null, null)
-
-        </div>
+    <div style="padding: 4rem 2rem; width: 80%; height: 100%; position: relative; bottom: 0%; left: 10%; right: 0%; margin: auto;">
         <ul style="list-style: none; margin: 0; padding: 0; overflow: hidden;padding: 4rem 2rem; float: left; width: 80%;">
             @foreach (var item in Model)
             {
@@ -56,7 +23,7 @@
                                     <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
                                     <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
                                     @Html.ActionLink("Details", "Details", "Producten", new { id = item.ProductID }, new { @style = "margin-left: 10%" })
-                                    <a href="#" id="PreviewProduct" data-toggle="modal" data-target="#myModal" data-productid="@item.ProductID">Preview</a>
+                                            <a href="#" class="PreviewProduct" data-toggle="modal" data-target="#myModal" data-productid="@item.ProductID">Preview</a>
                                     <a id="btn_add">
                                 <p style="margin-left: 10%;">Uitverkocht</p>
                                 </a>
@@ -81,7 +48,7 @@
                                     <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
                                     <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
                                     @Html.ActionLink("Details", "Details", "Producten", new { id = item.ProductID }, new { @style = "margin-left: 10%" })
-                                    <a href="#" id="PreviewProduct" data-toggle="modal" data-target="#myModal" data-productid="@item.ProductID">Preview</a>
+                                    <a href="#" class="PreviewProduct" data-toggle="modal" data-target="#myModal" data-productid="@item.ProductID">Preview</a>
                                     <a id="btn_add" href=@Url.Action("Add", "WinkelwagenManagement", new {KlantID = klant.KlantID, ProductID = item.ProductID})>
                                     <p style="margin-left: 10%;">Voeg toe aan winkelwagen</p>
                                 </a>
@@ -97,61 +64,28 @@
 }
 else
 {
-    <div style="width: 100%; height: 100%; position: relative; bottom: 0%; left: 0%; right: 0%; margin: auto;display: inline">
-        <div style="width: 20%; float: left; width: 20%;padding: 4rem 2rem;">
-            <h6 style="text-decoration: underline; ">Sorteer op Genre</h6>
-            @Html.ActionLink("Action", "IndexGenre", "Sorteer", new { genre = "Action" }, null)
-            <br />
-            @Html.ActionLink("Adventure", "IndexGenre", "Sorteer", new { genre = "Adventure" }, null)
-            <br />
-            @Html.ActionLink("Fighting", "IndexGenre", "Sorteer", new { genre = "Fighting" }, null)
-            <br />
-            @Html.ActionLink("Platform", "IndexGenre", "Sorteer", new { genre = "Platform" }, null)
-            <br />
-            @Html.ActionLink("Puzzle", "IndexGenre", "Sorteer", new { genre = "Puzzle" }, null)
-            <br />
-            @Html.ActionLink("Racing", "IndexGenre", "Sorteer", new { genre = "Racing" }, null)
-            <br />
-            @Html.ActionLink("Roleplaying", "IndexGenre", "Sorteer", new { genre = "RolePlaying" }, null)
-            <br />
-            @Html.ActionLink("Shooter", "IndexGenre", "Sorteer", new { genre = "Shooter" }, null)
-            <br />
-            @Html.ActionLink("Simulation", "IndexGenre", "Sorteer", new { genre = "Simulation" }, null)
-            <br />
-            @Html.ActionLink("Sports", "IndexGenre", "Sorteer", new { genre = "Sports" }, null)
-            <br />
-            @Html.ActionLink("Strategy", "IndexGenre", "Sorteer", new { genre = "Strategy" }, null)
-            <br />
-            @Html.ActionLink("Mmorpg", "IndexGenre", "Sorteer", new { genre = "Mmorpg" }, null)
-            <br />
-            <br />
-            <h6 style="text-decoration: underline; ">Sorteer op Prijs</h6>
-            @Html.ActionLink("Prijs hoog - laag", "IndexPrijsHoogNaarLaag", "Sorteer", null, null)
-            <br />
-            @Html.ActionLink("Prijs laag - hoog", "IndexPrijsLaagNaarHoog", "Sorteer", null, null)
-
-        </div>
+    <div style="padding: 4rem 2rem; width: 80%; height: 100%; position: relative; bottom: 0%; left: 10%; right: 0%; margin: auto;">
         <ul style="list-style: none; margin: 0; padding: 0; overflow: hidden;padding: 4rem 2rem; float: left; width: 80%;">
             @foreach (var item in Model)
-            {
-                <li style="float: left; padding-right: 2%; padding-bottom: 2%;">
-                    <div style="display: inline-block; width: 255px; height: 322px;">
-                        <div style="width: 255px; height: 161px; position: relative; display: flex; justify-content: center; align-items: center; background: url(@Url.Content(item.AchtergrondFoto)) no-repeat; background-size: cover;">
-                            <div style="width: 80px; height: 100px; position: absolute; margin-top: 50px; margin-left: -62px; z-index: 1; border: 1px solid #e0e0e0;">
-                                <img style="width: 100%;" src="@Url.Content(item.Foto)" class="img-responsive" alt="a" />
-                            </div>
-                        </div>
-                        <div style="width: 255px; height: 161px; background-color: rgb(255, 255, 255); position: relative; border: 1px solid #e0e0e0;">
-                            <p style="padding-top: 10%;">
-                                <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
-                                <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
-                                @Html.ActionLink("Details", "Details", "Producten", new { id = item.ProductID }, new { @style = "margin-left: 10%" })
-                                <a href="#" class="PreviewProduct" data-toggle="modal" data-target="#myModal" data-productid="@item.ProductID">Preview</a>
-                            </p>
+        {
+            <li style="float: left; padding-right: 2%; padding-bottom: 2%;">
+                <div style="display: inline-block; width: 255px; height: 322px;">
+                    <div style="width: 255px; height: 161px; position: relative; display: flex; justify-content: center; align-items: center; background: url(@Url.Content(item.AchtergrondFoto)) no-repeat; background-size: cover;">
+                        <div style="width: 80px; height: 100px; position: absolute; margin-top: 50px; margin-left: -62px; z-index: 1; border: 1px solid #e0e0e0;">
+                            <img style="width: 100%;" src="@Url.Content(item.Foto)" class="img-responsive" alt="a" />
                         </div>
                     </div>
-                </li>
-            }
+                    <div style="width: 255px; height: 161px; background-color: rgb(255, 255, 255); position: relative; border: 1px solid #e0e0e0;">
+                        <p style="padding-top: 10%;">
+                            <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
+                            <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
+                            @Html.ActionLink("Details", "Details", "Producten", new { id = item.ProductID }, new { @style = "margin-left: 10%" })
+                            <a href="#myModal" class="PreviewProduct" data-toggle="modal" data-target="#myModal" data-productid="@item.ProductID">Preview</a>
+                        </p>
+                    </div>
+                </div>
+            </li>
+    }
         </ul>
     </div>
 

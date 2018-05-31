@@ -40,6 +40,48 @@
                     </ul>
                 </div>
             </nav>
+            <div class="navbar2 navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-nav">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse main-nav">
+                        <ul class="nav navbar-nav">
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Action" }, null)">Action</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Adventure" }, null)">Adventure</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Fighting" }, null)">Fighting</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Platform" }, null)">Platform</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Puzzle" }, null)">Puzzle</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Racing" }, null)">Racing</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "RolePlaying" }, null)">RolePlaying</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Shooter" }, null)">Shooter</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Simulation" }, null)">Simulation</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Sports" }, null)">Sports</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Strategy" }, null)">Strategy</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Mmorpg" }, null)">Mmorpg</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexPrijsHoogNaarLaag", "Sorteer",null)">Prijs hoog - laag</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexPrijsLaagNaarHoog", "Sorteer",  null)">Prijs laag - hoog</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
         }
         if (admin != null)
@@ -59,34 +101,116 @@
                     </ul>
                 </div>
             </nav>
+            <div class="navbar2 navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-nav">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse main-nav">
+                        <ul class="nav navbar-nav">
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Action" }, null)">Action</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Adventure" }, null)">Adventure</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Fighting" }, null)">Fighting</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Platform" }, null)">Platform</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Puzzle" }, null)">Puzzle</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Racing" }, null)">Racing</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "RolePlaying" }, null)">RolePlaying</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Shooter" }, null)">Shooter</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Simulation" }, null)">Simulation</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Sports" }, null)">Sports</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Strategy" }, null)">Strategy</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Mmorpg" }, null)">Mmorpg</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexPrijsHoogNaarLaag", "Sorteer",null)">Prijs hoog - laag</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="@Url.Action("IndexPrijsLaagNaarHoog", "Sorteer",  null)">Prijs laag - hoog</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         }
     }
     else
     {
-    
+
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="@Url.Action("Index", "Home")">Lunar</a>
                 </div>
-                <ul class="nav navbar-nav">
-                    
-                </ul>
+                <ul class="nav navbar-nav"></ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="@Url.Action("Login", "Klant",new { @style = "color:White;" })">Inloggen</a></li>
-                    <li><a href="@Url.Action("RegistratieKlant", "Klant", new {@style = "color:White;"})">Registreren</a></li>
+                    <li><a href="@Url.Action("Login", "Klant",new { @style = "color:#FFFFFF;" })">Inloggen</a></li>
+                    <li><a href="@Url.Action("RegistratieKlant", "Klant", new { @style = "color:#FFFFFF;" })">Registreren</a></li>
                 </ul>
             </div>
         </nav>
+        <div class="navbar2 navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-nav">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse main-nav">
+                    <ul class="nav navbar-nav">
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Action" }, null)">Action</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Adventure" }, null)">Adventure</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Fighting" }, null)">Fighting</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Platform" }, null)">Platform</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Puzzle" }, null)">Puzzle</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Racing" }, null)">Racing</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "RolePlaying" }, null)">RolePlaying</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Shooter" }, null)">Shooter</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Simulation" }, null)">Simulation</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Sports" }, null)">Sports</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Strategy" }, null)">Strategy</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexGenre", "Sorteer", new { genre = "Mmorpg" }, null)">Mmorpg</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexPrijsHoogNaarLaag", "Sorteer",null)">Prijs hoog - laag</a></li>
+                        <li class="divider-vertical"></li>
+                        <li><a href="@Url.Action("IndexPrijsLaagNaarHoog", "Sorteer",  null)">Prijs laag - hoog</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     }
 
-@RenderBody()
-    
-        <footer>
-            @Scripts.Render("~/bundles/jquery")
-            @Scripts.Render("~/bundles/bootstrap")
-            @RenderSection("scripts", required: false)
-            <script src="/Scripts/Jeremy.js"></script>
-        </footer>
+    @RenderBody()
+
+    <footer>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+        <script src="/Scripts/Jeremy.js"></script>
+    </footer>
 </body>
 </html>

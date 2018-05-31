@@ -6,5 +6,4 @@
             $(".modal-body").html(data);
         });
     });
-
 };

@@ -48,7 +48,7 @@ namespace LunarWebShop.Controllers
         {
             if (Session["Gebruikersnaam"] != null)
             {
-                return RedirectToAction("Index", "Home", new {Gebruikersnaam = Session["Gebruikersnaam"].ToString()});
+                return RedirectToAction("Index", "Home", new { Gebruikersnaam = Session["Gebruikersnaam"].ToString() });
             }
 
             return View();
@@ -60,26 +60,28 @@ namespace LunarWebShop.Controllers
         {
             string message = "";
             var gebruiker = GebruikerLogic.Inloggen(login.Gebruikersnaam, login.Wachtwoord);
-
-            if (gebruiker is Klant)
+            if (ModelState.IsValid)
             {
+                if (gebruiker is Klant)
+                {
 
-                //Login Sessie aanmaken
-                Session["Klant"] = gebruiker;
-                return RedirectToAction("Index", "Home");
+                    //Login Sessie aanmaken
+                    Session["Klant"] = gebruiker;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (gebruiker is Administrator)
+                {
+
+                    message = " Succesvol ingelogd.";
+                    ViewBag.Message = message;
+                    ViewBag.Status = true;
+
+                    //Login Sessie aanmaken
+                    Session["Administrator"] = gebruiker;
+                    return RedirectToAction("Index", "Home");
+                }
             }
-
-            if (gebruiker is Administrator)
-            {
-                message = " Succesvol ingelogd.";
-                ViewBag.Message = message;
-                ViewBag.Status = true;
-
-                //Login Sessie aanmaken
-                Session["Administrator"] = gebruiker;
-                return RedirectToAction("Index", "Home");
-            }
-
             message = gebruiker.ToString();
             ViewBag.Status = false;
             ViewBag.Message = message;

@@ -6,7 +6,6 @@
     var klant = Session["Klant"] as Klant;
 
     <center style="padding: 4rem 2rem;">
-    <h2>Uw games</h2>
     <div style="padding: 4rem 2rem; width: 80%; height: 100%; position: relative; bottom: 0%; left: 10%; right: 0%; margin: auto;">
         <ul style="list-style: none;margin: 0;padding: 0;overflow: hidden;float: left;">
             @foreach (var item in Model)
@@ -22,7 +21,6 @@
                         <div style="width: 255px; height: 161px; background-color: white; position: relative; border:1px solid #e0e0e0;">
                             <p style="padding-top: 10%;">
                                 <h6 style="color: black; margin-left: 10%;">@Html.DisplayFor(modelItem => item.Naam)</h6>
-                                <h4 style="color: black; margin-left: 10%;">€@Html.DisplayFor(modelItem => item.Prijs)</h4>
                                 <a id="btn_add")>
                                     <p style="margin-left: 10%;">Uw Activatiecode : @item.Keycode.First().KeycodeID</p>
                                 </a>
